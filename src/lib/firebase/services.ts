@@ -1,6 +1,6 @@
 
 import app from "./config";
-import { doc, setDoc, getFirestore, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc } from "firebase/firestore";
 
 export const db = getFirestore(app);
 
@@ -41,3 +41,41 @@ export async function deleteJournalEntry(userId: string, date: string) {
   const docRef = doc(db, "journals", userId, "entries", date);
   await deleteDoc(docRef);
 }
+
+export async function updateJournalEntry(
+  userId: string,
+  date: string,
+  newContent: string
+) {
+  const docRef = doc(db, "journals", userId, "entries", date);
+  await updateDoc(docRef, {
+    content: newContent,
+  });
+}
+
+export async function getJournalEntry(userId: string, date: string) {
+  const docRef = doc(db, "journals", userId, "entries", date);
+  const snapshot = await getDoc(docRef);
+
+  if (!snapshot.exists()) return null;
+
+  const rawData = snapshot.data();
+
+  // Validasi properti penting
+  if (
+    typeof rawData.content !== "string" ||
+    typeof rawData.date !== "string" ||
+    typeof rawData.createdAt !== "string"
+  ) {
+    console.warn("Invalid journal entry structure:", rawData);
+    return null; // atau lempar error jika kamu ingin logika lebih ketat
+  }
+
+  const data = rawData as JournalEntry;
+
+  return {
+    id: snapshot.id,
+    ...data,
+  };
+}
+
