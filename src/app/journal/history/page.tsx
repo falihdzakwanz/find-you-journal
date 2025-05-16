@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 type Entry = {
   id: string;
   content: string;
+  question: string;
   createdAt: string;
   date: string;
 };
@@ -68,6 +69,9 @@ export default function JournalHistoryPage() {
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-sm text-gray-500">{entry.date}</p>
+                <p className="text-sm text-blue-600 italic">
+                  Pertanyaan: {entry.question}
+                </p>
                 <p className="truncate max-w-xs">{entry.content}</p>
               </div>
               <div className="flex gap-2">
@@ -89,54 +93,28 @@ export default function JournalHistoryPage() {
         ))}
       </ul>
 
-      {/* Modal Detail */}
+      {/* Modal Detail (Read-Only) */}
       {selectedEntry && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-lg w-full">
             <h2 className="text-lg font-semibold mb-2">
-              Edit Jurnal - {selectedEntry.date}
+              Detail Jurnal - {selectedEntry.date}
             </h2>
+            <p className="text-sm text-blue-600 italic mb-2">
+              Pertanyaan: {selectedEntry.question}
+            </p>
             <textarea
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded bg-gray-100"
               rows={6}
               value={selectedEntry.content}
-              onChange={(e) =>
-                setSelectedEntry({ ...selectedEntry, content: e.target.value })
-              }
+              readOnly
             />
             <div className="flex justify-end gap-2 mt-4">
               <button
                 className="px-4 py-2 bg-gray-200 rounded"
                 onClick={() => setSelectedEntry(null)}
               >
-                Batal
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-                onClick={async () => {
-                  const res = await fetch("/api/journal/edit", {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      date: selectedEntry.date,
-                      content: selectedEntry.content,
-                    }),
-                  });
-                  if (res.ok) {
-                    setEntries((prev) =>
-                      prev.map((e) =>
-                        e.id === selectedEntry.id
-                          ? { ...e, content: selectedEntry.content }
-                          : e
-                      )
-                    );
-                    setSelectedEntry(null);
-                  } else {
-                    alert("Gagal mengupdate jurnal.");
-                  }
-                }}
-              >
-                Simpan
+                Tutup
               </button>
               <button
                 className="px-4 py-2 bg-gray-800 text-white rounded"

@@ -8,6 +8,7 @@ type JournalEntry = {
   content: string;
   createdAt: string;
   date: string;
+  question: string;
 };
   
 export async function saveJournalEntry(
