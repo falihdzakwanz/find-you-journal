@@ -5,7 +5,7 @@ import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, a
 export const db = getFirestore(app);
 
 type JournalEntry = {
-  content: string;
+  answer: string;
   createdAt: string;
   date: string;
   question: string;
@@ -45,24 +45,24 @@ export async function getJournalEntries(userId: string) {
   return entries.sort((a, b) => b.date.localeCompare(a.date));
 }
 
-export async function deleteJournalEntry(userId: string, date: string) {
-  const docRef = doc(db, "journals", userId, "entries", date);
+export async function deleteJournalEntry(userId: string, id: string) {
+  const docRef = doc(db, "journals", userId, "entries", id);
   await deleteDoc(docRef);
 }
 
 export async function updateJournalEntry(
   userId: string,
-  date: string,
-  newContent: string
+  id: string,
+  newAnswer: string
 ) {
-  const docRef = doc(db, "journals", userId, "entries", date);
+  const docRef = doc(db, "journals", userId, "entries", id);
   await updateDoc(docRef, {
-    content: newContent,
+    answer: newAnswer,
   });
 }
 
-export async function getJournalEntry(userId: string, date: string) {
-  const docRef = doc(db, "journals", userId, "entries", date);
+export async function getJournalEntry(userId: string, id: string) {
+  const docRef = doc(db, "journals", userId, "entries", id);
   const snapshot = await getDoc(docRef);
 
   if (!snapshot.exists()) return null;
@@ -71,12 +71,13 @@ export async function getJournalEntry(userId: string, date: string) {
 
   // Validasi properti penting
   if (
-    typeof rawData.content !== "string" ||
+    typeof rawData.answer !== "string" ||
     typeof rawData.date !== "string" ||
-    typeof rawData.createdAt !== "string"
+    typeof rawData.createdAt !== "string" ||
+    typeof rawData.question !== "string"
   ) {
     console.warn("Invalid journal entry structure:", rawData);
-    return null; // atau lempar error jika kamu ingin logika lebih ketat
+    return null;
   }
 
   const data = rawData as JournalEntry;

@@ -2,32 +2,35 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Props {
-  initialContent: string;
-  date: string;
+  initialAnswer: string;
+  id: string;
 }
 
-export default function EditJournalForm({ initialContent, date }: Props) {
-  const [content, setContent] = useState(initialContent);
+export default function EditJournalForm({ initialAnswer, id }: Props) {
+  const [answer, setAnswer] = useState(initialAnswer);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const toastLoading = toast.loading("Submiting...");
 
-    const res = await fetch("/api/journal/edit", {
+    const res = await fetch(`/api/journal/entry?id=${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date, content }),
+      body: JSON.stringify({ id, answer }),
     });
 
     setLoading(false);
     if (res.ok) {
+      toast.success("Update Success!", { id: toastLoading });
       router.push("/journal/history");
     } else {
-      alert("Gagal menyimpan perubahan");
+      toast.error("Failed to Update!");
     }
   };
 
@@ -35,8 +38,8 @@ export default function EditJournalForm({ initialContent, date }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <textarea
         className="w-full border p-3 rounded h-60"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={answer}
+        onChange={(e) => setAnswer(e.target.value)}
         required
       />
       <div className="flex justify-end gap-2">
