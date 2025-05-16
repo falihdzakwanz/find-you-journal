@@ -13,10 +13,14 @@ const questionSuggestions = [
   "Apa yang bisa Anda lakukan lebih baik besok?",
 ];
 
+type Answer = {
+  question: string;
+  answer: string;
+};
+
 export default function JournalTodayPage() {
   const { data: session, status } = useSession();
-  const [content, setContent] = useState("");
-  const [question, setQuestion] = useState("");
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [customQuestion, setCustomQuestion] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,27 +32,46 @@ export default function JournalTodayPage() {
     return null;
   }
 
+  const handleAddQuestion = (q: string) => {
+    if (!answers.some((a) => a.question === q)) {
+      setAnswers([...answers, { question: q, answer: "" }]);
+    }
+  };
+
+  const handleCustomQuestionSubmit = () => {
+    if (customQuestion.trim()) {
+      handleAddQuestion(customQuestion.trim());
+      setCustomQuestion("");
+      setShowCustomInput(false);
+    }
+  };
+
+  const handleAnswerChange = (index: number, value: string) => {
+    const updated = [...answers];
+    updated[index].answer = value;
+    setAnswers(updated);
+  };
+
   const handleSubmit = async () => {
-    const finalQuestion = customQuestion || question;
-    if (!content.trim() || !finalQuestion.trim()) return;
+    if (answers.length === 0 || answers.some((a) => !a.answer.trim())) {
+      alert("Isi semua jawaban terlebih dahulu!");
+      return;
+    }
 
     setLoading(true);
 
     const res = await fetch("/api/journal/today", {
       method: "POST",
-      body: JSON.stringify({ content, question: finalQuestion }),
+      body: JSON.stringify({ entries: answers }),
       headers: { "Content-Type": "application/json" },
     });
 
     setLoading(false);
     if (res.ok) {
-      setContent("");
-      setQuestion("");
-      setCustomQuestion("");
-      setShowCustomInput(false);
       alert("Jurnal berhasil disimpan!");
       router.push("/journal/history");
     } else {
+      console.log(res)
       alert("Gagal menyimpan jurnal!");
     }
   };
@@ -61,66 +84,71 @@ export default function JournalTodayPage() {
         <label className="font-semibold mb-2 block">Pilih Pertanyaan</label>
         <div className="space-y-2">
           {questionSuggestions.map((q, i) => (
-            <button
+            <div
               key={i}
-              onClick={() => {
-                setQuestion(q);
-                setCustomQuestion("");
-                setShowCustomInput(false);
-              }}
-              className={`block text-left w-full px-3 py-2 rounded border ${
-                question === q
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-300"
-              }`}
+              className="flex items-center justify-between border px-3 py-2 rounded hover:bg-blue-50"
             >
-              {q}
-            </button>
+              <span>{q}</span>
+              <button
+                onClick={() => handleAddQuestion(q)}
+                className="text-blue-600 font-bold text-lg"
+              >
+                +
+              </button>
+            </div>
           ))}
 
-          {/* Tombol Tambah Pertanyaan Sendiri */}
-          <button
-            onClick={() => {
-              setShowCustomInput(!showCustomInput);
-              setQuestion("");
-              setCustomQuestion("");
-            }}
-            className={`block text-left w-full px-3 py-2 rounded border ${
-              showCustomInput ? "border-blue-600 bg-blue-50" : "border-gray-300"
-            }`}
-          >
-            ➕ Tambahkan Pertanyaan Sendiri
-          </button>
-        </div>
-
-        {showCustomInput && (
-          <div className="mt-4">
-            <input
-              type="text"
-              value={customQuestion}
-              onChange={(e) => setCustomQuestion(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2"
-              placeholder="Tulis pertanyaanmu di sini..."
-            />
+          <div className="mt-3">
+            {showCustomInput ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={customQuestion}
+                  onChange={(e) => setCustomQuestion(e.target.value)}
+                  placeholder="Tulis pertanyaanmu..."
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+                <button
+                  onClick={handleCustomQuestionSubmit}
+                  className="bg-blue-600 text-white px-3 py-2 rounded"
+                >
+                  Tambah
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowCustomInput(true)}
+                className="w-full border border-gray-300 rounded px-3 py-2 text-left hover:bg-blue-50"
+              >
+                ➕ Tambahkan Pertanyaan Sendiri
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
-      <label className="block mb-1 font-semibold">Jawaban Anda:</label>
-      <textarea
-        className="w-full h-60 border border-gray-300 rounded p-3 text-gray-800"
-        placeholder="Tuliskan jawaban Anda di sini..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
+      {/* Daftar pertanyaan yang dipilih */}
+      {answers.map((item, index) => (
+        <div key={index} className="mb-6">
+          <label className="block font-semibold mb-1">{item.question}</label>
+          <textarea
+            className="w-full h-32 border border-gray-300 rounded p-3 text-gray-800"
+            placeholder="Tuliskan jawaban Anda..."
+            value={item.answer}
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
+          />
+        </div>
+      ))}
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-      >
-        {loading ? "Menyimpan..." : "Simpan Jurnal"}
-      </button>
+      {answers.length > 0 && (
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        >
+          {loading ? "Menyimpan..." : "Simpan Semua Jurnal"}
+        </button>
+      )}
     </main>
   );
 }

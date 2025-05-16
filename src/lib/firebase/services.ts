@@ -1,6 +1,6 @@
 
 import app from "./config";
-import { doc, setDoc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, addDoc } from "firebase/firestore";
 
 export const db = getFirestore(app);
 
@@ -11,20 +11,24 @@ type JournalEntry = {
   question: string;
 };
   
-export async function saveJournalEntry(
+export async function saveJournalEntries(
   userId: string,
-  content: string,
-  question: string
+  entries: { answer: string; question: string }[]
 ) {
-  const today = new Date().toISOString().slice(0, 10);
-  const docRef = doc(db, "journals", userId, "entries", today);
+  const entriesRef = collection(db, "journals", userId, "entries");
 
-  await setDoc(docRef, {
-    content,
-    question,
-    createdAt: new Date().toISOString(),
-    date: today,
-  });
+  const today = new Date().toISOString().slice(0, 10);
+
+  const promises = entries.map(({ answer, question }) =>
+    addDoc(entriesRef, {
+      answer,
+      question,
+      createdAt: new Date().toISOString(),
+      date: today,
+    })
+  );
+
+  await Promise.all(promises);
 }
 
 export async function getJournalEntries(userId: string) {
