@@ -10,18 +10,21 @@ type JournalEntry = {
   date: string;
 };
   
-
-export async function saveJournalEntry(userId: string, content: string) {
+export async function saveJournalEntry(
+  userId: string,
+  content: string,
+  question: string
+) {
   const today = new Date().toISOString().slice(0, 10);
   const docRef = doc(db, "journals", userId, "entries", today);
 
   await setDoc(docRef, {
     content,
+    question,
     createdAt: new Date().toISOString(),
     date: today,
   });
 }
-
 
 export async function getJournalEntries(userId: string) {
   const entriesRef = collection(db, "journals", userId, "entries");
