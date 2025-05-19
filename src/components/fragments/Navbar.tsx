@@ -25,25 +25,20 @@ export default function Navbar() {
     },
     {
       href: "/journal/today",
-      label: "Start Journaling",
+      label: "Journaling",
       icon: <PencilLine size={18} />,
-      extraClass: "bg-amber-200",
     },
   ];
-  
 
   return (
     <nav
       className={`${
         isHome ? "absolute" : "sticky top-0"
-      } w-full z-50 bg-white shadow-sm`}
+      } w-full z-50 bg-neutral shadow-sm`}
     >
-      <div className="relative flex flex-col py-3 px-4 bg-amber-700 md:flex-row md:items-center md:justify-between">
-        <div className="flex justify-between items-center w-full md:w-auto">
-          <Link
-            href="/"
-            className="text-xl lg:text-2xl font-bold text-blue-600"
-          >
+      <div className="relative flex flex-col px-4 py-3 bg-primary md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <Link href="/" className="text-xl font-bold text-white lg:text-2xl">
             Growth Journal
           </Link>
 
@@ -53,7 +48,7 @@ export default function Navbar() {
               aria-label="Toggle menu"
               initial={false}
               animate={isMenuOpen ? "open" : "closed"}
-              className="w-8 h-8 relative focus:outline-none"
+              className="relative w-8 h-8 text-white focus:outline-none"
             >
               <motion.svg
                 width="24"
@@ -94,17 +89,15 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Nav links for desktop */}
-        <div className="hidden md:flex md:space-x-6 lg:space-x-10 mt-4 md:mt-0">
-          {navLinks.map(({ href, label, icon, extraClass }) => {
+        {/* Desktop nav */}
+        <div className="hidden mt-4 md:flex md:space-x-6 lg:space-x-10 md:mt-0">
+          {navLinks.map(({ href, label, icon }) => {
             const isActive = pathname === href;
             return (
               <Link
                 key={href}
                 href={href}
-                className={`group relative text-gray-700 hover:text-blue-600 text-lg lg:text-xl pb-1 w-fit ${
-                  extraClass ?? ""
-                }`}
+                className="relative pb-1 text-lg text-white group lg:text-xl w-fit"
               >
                 <span className="flex items-center gap-2">
                   {icon}
@@ -113,11 +106,11 @@ export default function Navbar() {
                 {isActive ? (
                   <motion.div
                     layoutId="underline"
-                    className="absolute bottom-0.5 left-0 h-[2px] w-full bg-blue-600 rounded"
+                    className="absolute bottom-0.5 left-0 h-[2px] w-full bg-white rounded"
                     transition={{ duration: 0.3 }}
                   />
                 ) : (
-                  <span className="absolute bottom-0.5 left-0 h-[2px] w-0 bg-blue-600 rounded transition-all duration-300 ease-in-out group-hover:w-full" />
+                  <span className="absolute bottom-0.5 left-0 h-[2px] w-0 bg-white rounded transition-all duration-300 ease-in-out group-hover:w-full" />
                 )}
               </Link>
             );
@@ -126,7 +119,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="flex items-center gap-2 text-red-500 hover:underline text-lg lg:text-xl"
+              className="flex items-center gap-2 px-3 py-1 text-lg text-red-500 bg-white rounded-md hover:underline lg:text-xl max-w-fit"
             >
               <LogOut size={18} />
               Logout
@@ -134,7 +127,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="flex items-center gap-2 text-green-600 hover:underline text-lg lg:text-xl"
+              className="flex items-center gap-2 px-3 py-1 text-lg bg-white rounded-md hover:underline lg:text-xl max-w-fit"
             >
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -148,7 +141,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Nav links for mobile */}
+        {/* Mobile nav */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -156,17 +149,15 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden absolute top-full left-0 w-full flex flex-col space-y-4 bg-white shadow-md px-4 py-4 z-40"
+              className="absolute left-0 z-40 flex flex-col w-full px-4 py-4 space-y-4 shadow-md md:hidden top-full bg-primary"
             >
-              {navLinks.map(({ href, label, extraClass, icon }) => {
+              {navLinks.map(({ href, label, icon }) => {
                 const isActive = pathname === href;
                 return (
                   <Link
                     key={href}
                     href={href}
-                    className={`group relative text-gray-700 hover:text-blue-600 text-lg pb-1 w-fit ${
-                      extraClass ?? ""
-                    }`}
+                    className="relative pb-1 text-lg text-white group w-fit"
                   >
                     <span className="flex items-center gap-2">
                       {icon}
@@ -175,11 +166,11 @@ export default function Navbar() {
                     {isActive ? (
                       <motion.div
                         layoutId="underline"
-                        className="absolute bottom-0.5 left-0 h-[2px] w-full bg-blue-600 rounded"
+                        className="absolute bottom-0.5 left-0 h-[2px] w-full bg-white rounded"
                         transition={{ duration: 0.3 }}
                       />
                     ) : (
-                      <span className="absolute bottom-0.5 left-0 h-[2px] w-0 bg-blue-600 rounded transition-all duration-300 ease-in-out group-hover:w-full" />
+                      <span className="absolute bottom-0.5 left-0 h-[2px] w-0 bg-white rounded transition-all duration-300 ease-in-out group-hover:w-full" />
                     )}
                   </Link>
                 );
@@ -187,7 +178,7 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <button
                   onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="flex items-center gap-2 text-red-500 hover:underline text-lg lg:text-xl"
+                  className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit"
                 >
                   <LogOut size={18} />
                   Logout
@@ -195,7 +186,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => signIn("google")}
-                  className="flex items-center gap-2 text-green-600 hover:underline text-lg lg:text-xl"
+                  className="flex items-center gap-2 px-4 py-2 text-base text-lg bg-white rounded-lg hover:underline max-w-fit"
                 >
                   <Image
                     src="https://www.svgrepo.com/show/475656/google-color.svg"

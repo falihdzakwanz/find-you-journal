@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
 
@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <main className="flex flex-col items-center justify-center h-screen text-center px-4 bg-gradient-to-r from-yellow-100 to-orange-200">
+    <main className="flex flex-col items-center justify-center min-h-screen text-center px-4 bg-neutral">
       <HeroSection session={session} router={router} />
     </main>
   );
