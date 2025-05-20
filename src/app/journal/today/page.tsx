@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 
-const questionSuggestions = [
+const allQuestions = [
   "Bagaimana harimu hari ini?",
   "Apa yang membuat Anda bersyukur hari ini?",
   "Apa hal terbaik yang terjadi hari ini?",
@@ -19,16 +19,27 @@ type Answer = {
   question: string;
   answer: string;
   expanded: boolean;
+  isCustom?: boolean;
 };
 
 export default function JournalTodayPage() {
-  const { data: session, status } = useSession();
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const { status } = useSession();
+  const router = useRouter();
+
+  const [answers, setAnswers] = useState<Answer[]>([
+    { question: allQuestions[0], answer: "", expanded: true }
+  ]);
   const [customQuestion, setCustomQuestion] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [todayDate, setTodayDate] = useState("");
-  const router = useRouter();
+
+  const initialQuestions = allQuestions;
+
+  const suggestionQuestions = initialQuestions.filter(
+    (q) => !answers.some((a) => a.question === q)
+  );
 
   useEffect(() => {
     const today = new Date();
@@ -42,25 +53,20 @@ export default function JournalTodayPage() {
   }, []);
 
   if (status === "loading") return <p>Loading...</p>;
-  if (!session) {
-    router.push("/");
-    return null;
-  }
 
   const handleAddQuestion = (q: string) => {
-    const index = answers.findIndex((a) => a.question === q);
-    if (index !== -1) {
-      const updated = [...answers];
-      updated[index].expanded = !updated[index].expanded;
-      setAnswers(updated);
-    } else {
+    if (!answers.find((a) => a.question === q)) {
       setAnswers([...answers, { question: q, answer: "", expanded: true }]);
     }
   };
 
   const handleCustomQuestionSubmit = () => {
-    if (customQuestion.trim()) {
-      handleAddQuestion(customQuestion.trim());
+    const trimmed = customQuestion.trim();
+    if (trimmed && !answers.find((a) => a.question === trimmed)) {
+      setAnswers([
+        ...answers,
+        { question: trimmed, answer: "", expanded: true, isCustom: true },
+      ]);
       setCustomQuestion("");
       setShowCustomInput(false);
     }
@@ -70,6 +76,22 @@ export default function JournalTodayPage() {
     const updated = [...answers];
     updated[index].answer = value;
     setAnswers(updated);
+  };
+
+  const toggleExpand = (index: number) => {
+    const updated = [...answers];
+    updated[index].expanded = !updated[index].expanded;
+    setAnswers(updated);
+  };
+
+  const removeQuestion = (index: number) => {
+    const removed = answers[index];
+    setAnswers((prev) => prev.filter((_, i) => i !== index));
+
+    // jika bukan pertanyaan custom, tambahkan ke suggestion
+    if (!removed.isCustom && !initialQuestions.includes(removed.question)) {
+      initialQuestions.push(removed.question);
+    }
   };
 
   const handleSubmit = async () => {
@@ -100,87 +122,129 @@ export default function JournalTodayPage() {
   };
 
   return (
-    <main className="max-w-xl px-4 mx-auto mt-20">
+    <main className="w-full max-w-sm px-4 py-10 mx-auto md:max-w-md lg:max-w-2xl">
       <h1 className="mb-1 text-2xl font-bold">✍️ Tulis Jurnal Hari Ini</h1>
       <p className="mb-6 text-gray-600">{todayDate}</p>
 
-      <div className="mb-6">
-        <label className="block mb-2 font-semibold">Pilih Pertanyaan</label>
-        <div className="space-y-2">
-          {questionSuggestions.map((q, i) => {
-            const existing = answers.find((a) => a.question === q);
-            return (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.02 }}
-                className="mb-2 border rounded"
+      <div className="space-y-4">
+        <AnimatePresence>
+          {answers.map((a, i) => (
+            <motion.div
+              key={a.question}
+              className="border rounded"
+              layout
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => toggleExpand(i)}
+                className="flex items-center justify-between w-full px-3 py-2 text-left cursor-pointer hover:bg-blue-50"
               >
-                <button
-                  onClick={() => handleAddQuestion(q)}
-                  className="flex items-center justify-between w-full px-3 py-2 text-left hover:bg-blue-50"
-                >
-                  <span>{q}</span>
+                <span>{a.question}</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeQuestion(i);
+                    }}
+                    className="text-red-500 transition-colors duration-200 hover:text-red-700"
+                    title="Hapus"
+                  >
+                    🗑️
+                  </button>
                   <span className="text-blue-600">
-                    {existing?.expanded ? "−" : "+"}
+                    {a.expanded ? "−" : "+"}
                   </span>
-                </button>
-
-                <AnimatePresence>
-                  {existing?.expanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-3 pb-3">
-                        <textarea
-                          className="w-full h-32 p-3 text-gray-800 border border-gray-300 rounded"
-                          placeholder="Tuliskan jawaban Anda..."
-                          value={existing.answer}
-                          onChange={(e) =>
-                            handleAnswerChange(
-                              answers.findIndex((a) => a.question === q),
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-
-          {/* Custom question */}
-          <div className="mt-3">
-            {showCustomInput ? (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={customQuestion}
-                  onChange={(e) => setCustomQuestion(e.target.value)}
-                  placeholder="Tulis pertanyaanmu..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                />
-                <button
-                  onClick={handleCustomQuestionSubmit}
-                  className="px-3 py-2 text-white bg-blue-600 rounded"
-                >
-                  Tambah
-                </button>
+                </div>
               </div>
-            ) : (
-              <button
-                onClick={() => setShowCustomInput(true)}
-                className="w-full px-3 py-2 text-left border border-gray-300 rounded hover:bg-blue-50"
-              >
-                ➕ Tambahkan Pertanyaan Sendiri
-              </button>
-            )}
+
+              <AnimatePresence initial={false}>
+                {a.expanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-3 pb-3">
+                      <textarea
+                        className="w-full h-32 p-3 text-gray-800 border border-gray-300 rounded"
+                        placeholder="Tuliskan jawaban Anda..."
+                        value={a.answer}
+                        onChange={(e) => handleAnswerChange(i, e.target.value)}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* Suggestion Toggle */}
+        {suggestionQuestions.length > 0 && (
+          <div>
+            <button
+              onClick={() => setShowSuggestions(!showSuggestions)}
+              className="w-full px-3 py-2 text-left border border-gray-300 rounded hover:bg-blue-50"
+            >
+              {showSuggestions
+                ? "⬆️ Sembunyikan Saran Pertanyaan"
+                : "➕ Lihat Saran Pertanyaan"}
+            </button>
+
+            <AnimatePresence>
+              {showSuggestions && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-2 space-y-2"
+                >
+                  {suggestionQuestions.map((q, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleAddQuestion(q)}
+                      className="block w-full px-3 py-2 text-left border border-gray-300 rounded hover:bg-blue-50"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
+        )}
+
+        {/* Custom question */}
+        <div className="mt-3">
+          {showCustomInput ? (
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={customQuestion}
+                onChange={(e) => setCustomQuestion(e.target.value)}
+                placeholder="Tulis pertanyaanmu..."
+                className="w-full px-3 py-2 border border-gray-300 rounded"
+              />
+              <button
+                onClick={handleCustomQuestionSubmit}
+                className="px-3 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+              >
+                Tambah
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowCustomInput(true)}
+              className="w-full px-3 py-2 text-left border border-gray-300 rounded hover:bg-blue-50"
+            >
+              ➕ Tambahkan Pertanyaan Sendiri
+            </button>
+          )}
         </div>
       </div>
 
@@ -190,7 +254,7 @@ export default function JournalTodayPage() {
           disabled={loading}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-2 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700"
+          className="px-6 py-2 mt-6 text-white bg-blue-600 rounded hover:bg-blue-700"
         >
           {loading ? "Menyimpan..." : "Simpan Semua Jurnal"}
         </motion.button>
