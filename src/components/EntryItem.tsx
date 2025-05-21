@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Entry } from "@/types/entry.type";
+import { Eye, Trash2 } from "lucide-react";
 
 interface EntryItemProps {
   entry: Entry;
@@ -29,7 +30,7 @@ export default function EntryItem({
         onClick={() => onToggle(entry.id)}
         className="flex items-center justify-between w-full p-4 text-left transition-colors duration-200 hover:bg-secondary/50"
       >
-        <span className="font-medium text-base-700">{entry.question}</span>
+        <span className="font-medium">{entry.question}</span>
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -46,24 +47,27 @@ export default function EntryItem({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="p-4 pt-0 border-t text-base-600 border-neutral-200">
+            <div className="p-4 text-base border-t border-neutral-200">
               {entry.answer}
               <div className="flex justify-end gap-2 mt-3">
                 <motion.button
                   onClick={() => onViewDetail(entry)}
-                  className="px-3 py-1 text-sm text-white transition-colors rounded bg-primary hover:bg-primary-600"
+                  className="flex items-center px-3 py-1 text-sm text-white transition-colors rounded bg-primary"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Lihat Detail
+                  <Eye className="w-4 h-4 lg:mr-2" />
+                  <span className="hidden lg:inline">Detail</span>
                 </motion.button>
+
                 <motion.button
                   onClick={() => onDelete(entry.id)}
-                  className="px-3 py-1 text-sm text-white transition-colors rounded bg-accent hover:bg-accent-600"
+                  className="flex items-center px-3 py-1 text-sm text-white transition-colors bg-red-400 rounded"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Hapus
+                  <Trash2 className="w-4 h-4 lg:mr-2" />
+                  <span className="hidden lg:inline">Hapus</span>
                 </motion.button>
               </div>
             </div>

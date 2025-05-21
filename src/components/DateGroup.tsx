@@ -59,7 +59,7 @@ export default function DateGroup({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="p-4 pt-0 space-y-3 border-t border-neutral-200">
+            <div className="p-4 space-y-3 border-t border-neutral-200">
               {entries.map((entry) => (
                 <EntryItem
                   key={entry.id}

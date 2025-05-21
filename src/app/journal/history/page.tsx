@@ -53,10 +53,10 @@ export default function JournalHistoryPage() {
   });
 
   return (
-    <main className="max-w-3xl p-4 mx-auto text-base">
-      <h1 className="mb-4 text-2xl font-bold text-base-800">Riwayat Jurnal</h1>
+    <main className="w-full max-w-sm px-4 py-10 mx-auto text-base md:max-w-md lg:max-w-3xl">
+      <h1 className="mb-4 text-2xl font-bold lg:text-3xl">Riwayat Jurnal</h1>
 
-      <div className="flex flex-col justify-between gap-2 mb-6 sm:flex-row">
+      <div className="flex flex-row justify-between gap-2 mb-6">
         <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
         <NavigationControls
           viewMode={viewMode}
@@ -74,8 +74,9 @@ export default function JournalHistoryPage() {
             const count =
               viewMode === "daily"
                 ? (grouped[groupKey] as Entry[]).length
-                : Object.values(grouped[groupKey] as Record<string, Entry[]>)
-                    .flat().length;
+                : Object.values(
+                    grouped[groupKey] as Record<string, Entry[]>
+                  ).flat().length;
 
             return (
               <motion.div
