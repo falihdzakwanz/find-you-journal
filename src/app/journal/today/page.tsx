@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
+import JournalTodaySkeleton from "@/components/JournalTodaySkeleton";
 
 const allQuestions = [
   "Bagaimana harimu hari ini?",
@@ -52,7 +53,7 @@ export default function JournalTodayPage() {
     setTodayDate(today.toLocaleDateString("id-ID", options));
   }, []);
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return <JournalTodaySkeleton />;
 
   const handleAddQuestion = (q: string) => {
     if (!answers.find((a) => a.question === q)) {

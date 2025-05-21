@@ -19,15 +19,19 @@ import EntryItem from "@/components/EntryItem";
 import NavigationControls from "@/components/NavigationControls";
 import ViewModeSelector from "@/components/ViewModeSelector";
 import { ViewMode } from "@/types/viewMode.type";
+import JournalHistorySkeleton from "@/components/JournalHistorySkeleton";
+import { useSession } from "next-auth/react";
+import formatDateIndo from "@/utils/formatDateIndo";
 
 export default function JournalHistoryPage() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("weekly");
+  const [viewMode, setViewMode] = useState<ViewMode>("daily");
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
   const [currentDate, setCurrentDate] = useState(new Date());
+    const { status } = useSession();
 
   useEffect(() => {
     async function fetchEntries() {
@@ -38,6 +42,8 @@ export default function JournalHistoryPage() {
     }
     fetchEntries();
   }, []);
+
+    if (status === "loading") return <JournalHistorySkeleton />;
 
   const handleDelete = async (id: string) => {
     const confirmDelete = confirm("Hapus jurnal?");
@@ -158,12 +164,12 @@ export default function JournalHistoryPage() {
   });
 
   return (
-    <main className="max-w-3xl mx-auto p-4 text-base">
-      <h1 className="text-2xl font-bold mb-4">Riwayat Jurnal</h1>
+    <main className="max-w-3xl p-4 mx-auto text-base">
+      <h1 className="mb-4 text-2xl font-bold">Riwayat Jurnal</h1>
 
       {/* Dropdown tampilan dan navigasi */}
-      <div className="flex flex-col sm:flex-row justify-between gap-2 mb-4">
-        <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode}/>
+      <div className="flex flex-col justify-between gap-2 mb-4 sm:flex-row">
+        <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
         <NavigationControls
           viewMode={viewMode}
           changeWeek={changeWeek}
@@ -180,10 +186,10 @@ export default function JournalHistoryPage() {
             <div key={groupKey} className="border rounded shadow-sm">
               <button
                 onClick={() => toggleGroup(groupKey)}
-                className="w-full text-left p-4 bg-gray-100 font-semibold flex justify-between items-center"
+                className="flex items-center justify-between w-full p-4 font-semibold text-left bg-gray-100"
               >
                 <span>
-                  {groupKey}{" "}
+                  {viewMode === "daily" ? formatDateIndo(groupKey) : groupKey}{" "}
                   <span className="text-sm font-normal text-gray-500">
                     (
                     {viewMode === "daily"
@@ -227,7 +233,7 @@ export default function JournalHistoryPage() {
                             <div key={dayKey}>
                               <button
                                 onClick={() => toggleDay(dayKey)}
-                                className="w-full text-left font-medium text-base py-2 px-3 bg-gray-50 flex justify-between items-center rounded"
+                                className="flex items-center justify-between w-full px-3 py-2 text-base font-medium text-left rounded bg-gray-50"
                               >
                                 <span>
                                   {dayKey}{" "}
@@ -251,7 +257,7 @@ export default function JournalHistoryPage() {
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                     transition={{ duration: 0.3 }}
-                                    className="overflow-hidden mt-2 gap-2"
+                                    className="gap-2 mt-2 overflow-hidden"
                                   >
                                     {entries.map((entry) => (
                                       <EntryItem
