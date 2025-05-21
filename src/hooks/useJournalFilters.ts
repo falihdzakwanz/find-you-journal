@@ -5,10 +5,25 @@ import { id } from "date-fns/locale";
 
 export function useJournalFilters(initialMode: ViewMode = "daily") {
   const [viewMode, setViewMode] = useState<ViewMode>(initialMode);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dailyDate, setDailyDate] = useState(new Date());
+  const [weeklyDate, setWeeklyDate] = useState(new Date());
+  const [monthlyDate, setMonthlyDate] = useState(new Date());
+
+  const getCurrentDate = () => {
+    switch (viewMode) {
+      case "weekly":
+        return weeklyDate;
+      case "monthly":
+        return monthlyDate;
+      default:
+        return dailyDate;
+    }
+  };
 
   const isInCurrent = (entryDate: string) => {
     const date = parseISO(entryDate);
+    const currentDate = getCurrentDate();
+
     if (viewMode === "weekly") {
       return isSameWeek(date, currentDate, { locale: id });
     } else if (viewMode === "monthly") {
@@ -19,30 +34,42 @@ export function useJournalFilters(initialMode: ViewMode = "daily") {
   };
 
   const changeDay = (direction: "prev" | "next") => {
-    const newDate = new Date(currentDate);
-    newDate.setDate(currentDate.getDate() + (direction === "next" ? 1 : -1));
-    setCurrentDate(newDate);
+    const newDate = new Date(dailyDate);
+    newDate.setDate(dailyDate.getDate() + (direction === "next" ? 1 : -1));
+    setDailyDate(newDate);
+
+    if (viewMode === "daily") {
+      setWeeklyDate(new Date(newDate));
+      setMonthlyDate(new Date(newDate));
+    }
   };
 
   const changeWeek = (direction: "prev" | "next") => {
-    const newDate = new Date(currentDate);
-    newDate.setDate(currentDate.getDate() + (direction === "next" ? 7 : -7));
-    setCurrentDate(newDate);
+    const newDate = new Date(weeklyDate);
+    newDate.setDate(weeklyDate.getDate() + (direction === "next" ? 7 : -7));
+    setWeeklyDate(newDate);
+
+    if (viewMode === "weekly") {
+      setMonthlyDate(new Date(newDate));
+    }
   };
 
   const changeMonth = (direction: "prev" | "next") => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(currentDate.getMonth() + (direction === "next" ? 1 : -1));
-    setCurrentDate(newDate);
+    const newDate = new Date(monthlyDate);
+    newDate.setMonth(monthlyDate.getMonth() + (direction === "next" ? 1 : -1));
+    setMonthlyDate(newDate);
   };
 
   return {
     viewMode,
     setViewMode,
-    currentDate,
+    currentDate: getCurrentDate(),
     isInCurrent,
     changeDay,
     changeWeek,
     changeMonth,
+    dailyDate,
+    weeklyDate,
+    monthlyDate,
   };
 }
