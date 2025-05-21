@@ -3,33 +3,45 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Entry } from "@/types/entry.type";
+import EntryItem from "./EntryItem";
 
-interface EntryItemProps {
-  entry: Entry;
+interface DateGroupProps {
+  date: string;
+  entries: Entry[];
   isExpanded: boolean;
-  onToggle: (id: string) => void;
+  onToggleDate: (date: string) => void;
+  expandedEntries: Set<string>;
+  onToggleEntry: (id: string) => void;
   onViewDetail: (entry: Entry) => void;
   onDelete: (id: string) => void;
 }
 
-export default function EntryItem({
-  entry,
+export default function DateGroup({
+  date,
+  entries,
   isExpanded,
-  onToggle,
+  onToggleDate,
+  expandedEntries,
+  onToggleEntry,
   onViewDetail,
   onDelete,
-}: EntryItemProps) {
+}: DateGroupProps) {
   return (
     <motion.div
       className="overflow-hidden border rounded-lg shadow-sm border-neutral-200 bg-neutral"
-      whileHover={{ scale: 1.005 }}
+      whileHover={{ scale: 1.01 }}
       transition={{ type: "spring", stiffness: 300 }}
     >
       <button
-        onClick={() => onToggle(entry.id)}
+        onClick={() => onToggleDate(date)}
         className="flex items-center justify-between w-full p-4 text-left transition-colors duration-200 hover:bg-secondary/50"
       >
-        <span className="font-medium text-base-700">{entry.question}</span>
+        <h3 className="font-medium text-primary-800">
+          {date}
+          <span className="ml-2 text-sm font-normal text-neutral-500">
+            ({entries.length} entri)
+          </span>
+        </h3>
         <motion.div
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -37,6 +49,7 @@ export default function EntryItem({
           <ChevronDown className="w-5 h-5 text-accent" />
         </motion.div>
       </button>
+
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -46,26 +59,17 @@ export default function EntryItem({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="p-4 pt-0 border-t text-base-600 border-neutral-200">
-              {entry.answer}
-              <div className="flex justify-end gap-2 mt-3">
-                <motion.button
-                  onClick={() => onViewDetail(entry)}
-                  className="px-3 py-1 text-sm text-white transition-colors rounded bg-primary hover:bg-primary-600"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Lihat Detail
-                </motion.button>
-                <motion.button
-                  onClick={() => onDelete(entry.id)}
-                  className="px-3 py-1 text-sm text-white transition-colors rounded bg-accent hover:bg-accent-600"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Hapus
-                </motion.button>
-              </div>
+            <div className="p-4 pt-0 space-y-3 border-t border-neutral-200">
+              {entries.map((entry) => (
+                <EntryItem
+                  key={entry.id}
+                  entry={entry}
+                  isExpanded={expandedEntries.has(entry.id)}
+                  onToggle={onToggleEntry}
+                  onViewDetail={onViewDetail}
+                  onDelete={onDelete}
+                />
+              ))}
             </div>
           </motion.div>
         )}
