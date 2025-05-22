@@ -17,14 +17,17 @@ export async function saveJournalEntries(
 ) {
   const entriesRef = collection(db, "journals", userId, "entries");
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date();
+  const clientTimezoneOffset = today.getTimezoneOffset() * 60000;
+  const localDate = new Date(today.getTime() - clientTimezoneOffset);
+  const dateString = localDate.toISOString().split("T")[0];
 
   const promises = entries.map(({ answer, question }) =>
     addDoc(entriesRef, {
       answer,
       question,
-      createdAt: new Date().toISOString(),
-      date: today,
+      createdAt: today.toISOString(), 
+      date: dateString,
     })
   );
 
