@@ -118,7 +118,7 @@ export default function Navbar() {
 
           {isLoggedIn ? (
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={() => signOut({ callbackUrl: "/" })}
               className="flex items-center gap-2 px-3 py-1 text-lg text-red-500 bg-white rounded-md hover:underline lg:text-xl max-w-fit"
             >
               <LogOut size={18} />
@@ -127,7 +127,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="flex items-center gap-2 px-3 py-1 text-lg bg-white rounded-md hover:underline lg:text-xl max-w-fit"
+              className="flex items-center gap-2 px-3 py-1 text-lg bg-white rounded-md hover:underline lg:text-xl max-w-fit text-primary"
             >
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -177,7 +177,7 @@ export default function Navbar() {
               })}
               {isLoggedIn ? (
                 <button
-                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  onClick={() => signOut({ callbackUrl: "/" })}
                   className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit"
                 >
                   <LogOut size={18} />
@@ -186,7 +186,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => signIn("google")}
-                  className="flex items-center gap-2 px-4 py-2 text-base text-lg bg-white rounded-lg hover:underline max-w-fit"
+                  className="flex items-center gap-2 px-4 py-2 text-primary text-lg bg-white rounded-lg hover:underline max-w-fit"
                 >
                   <Image
                     src="https://www.svgrepo.com/show/475656/google-color.svg"
