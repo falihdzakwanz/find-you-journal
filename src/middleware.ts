@@ -2,21 +2,36 @@ import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
-  function middleware() {
-    // Bisa tambahkan logic tambahan di sini jika perlu
+  function middleware(req) {
+    const { pathname } = req.nextUrl;
+    const isAuthPage =
+      pathname.startsWith("/login");
+
+    // If user is logged in and trying to access auth pages
+    if (isAuthPage) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    // For protected routes, just continue
     return NextResponse.next();
   },
   {
     callbacks: {
-      authorized({ token }) {
-        // Hanya izinkan akses jika user sudah login
+      authorized({ token, req }) {
+        const { pathname } = req.nextUrl;
+        const isAuthPage =
+          pathname.startsWith("/login");
+
+        // Allow access to auth pages when not logged in
+        if (isAuthPage) return true;
+
+        // For all other routes, require authentication
         return !!token;
       },
     },
   }
 );
 
-// Konfigurasi route yang ingin dilindungi
 export const config = {
-  matcher: ["/journal/:path*", "/profile"],
+  matcher: ["/journal/:path*", "/profile", "/login"],
 };
