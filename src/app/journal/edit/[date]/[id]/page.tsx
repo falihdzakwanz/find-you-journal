@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
 import { getJournalEntry } from "@/lib/firebase/services";
 import { redirect } from "next/navigation";
-import EditJournalForm from "@/components/EditJournalForm";
+import EditJournalForm from "@/components/journal/EditJournalForm";
 import formatDateIndo from "@/utils/formatDate";
 
 interface Params {

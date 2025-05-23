@@ -1,19 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import JournalHistorySkeleton from "@/components/JournalHistorySkeleton";
+import JournalHistorySkeleton from "@/components/Skeleton/JournalHistorySkeleton";
 import { formatDateEng } from "@/utils/formatDate";
 import { groupEntries } from "@/utils/groupEntries";
 import { useJournalFilters } from "@/hooks/useJournalFilters";
 import useJournalHistory from "@/hooks/useJournalHistory";
-import ModalDetails from "@/components/ModalDetails";
-import NavigationControls from "@/components/NavigationControls";
-import ViewModeSelector from "@/components/ViewModeSelector";
+import ModalDetails from "@/components/Modal/ModalDetails";
+import NavigationControls from "@/components/journal/NavigationControls";
+import ViewModeSelector from "@/components/journal/ViewModeSelector";
 import { Entry } from "@/types/entry.type";
-import GroupHeader from "@/components/GroupHeader";
-import EntryItem from "@/components/EntryItem";
-import DateGroup from "@/components/DateGroup";
-import EmptyState from "@/components/EmptyState";
+import GroupHeader from "@/components/journal/GroupHeader";
+import EntryItem from "@/components/journal/EntryItem";
+import DateGroup from "@/components/journal/DateGroup";
+import EmptyState from "@/components/journal/EmptyState";
 
 export default function JournalHistoryPage() {
   const {

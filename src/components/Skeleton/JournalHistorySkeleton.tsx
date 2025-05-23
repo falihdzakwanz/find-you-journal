@@ -1,4 +1,4 @@
-import Skeleton from "./Skeleton";
+import Skeleton from "./Index";
 
 export default function JournalHistorySkeleton() {
   return (
@@ -17,7 +17,7 @@ export default function JournalHistorySkeleton() {
         <Skeleton className="w-48 h-10 rounded lg:h-12" />
         <Skeleton className="w-16 h-8 rounded lg:h-10" />
       </section>
-      
+
       <section className="flex flex-col space-y-4">
         {[1, 2, 3].map((_, groupIdx) => (
           <div key={groupIdx} className="overflow-hidden rounded shadow-sm">
