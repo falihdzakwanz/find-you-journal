@@ -35,12 +35,12 @@ export default function CustomQuestionInput({
             value={customQuestion}
             onChange={(e) => onSetCustomQuestion(e.target.value)}
             placeholder="Your custom question..."
-            className="flex-1 px-4 py-2 transition-all duration-200 border rounded-lg text-dark-brown border-primary focus:ring-2 focus:ring-dark-brown/30 focus:border-primary/50 outline-0"
+            className="flex-1 px-4 py-2 text-base transition-all duration-200 bg-white border rounded-lg text-dark-brown border-primary focus:ring-2 focus:ring-dark-brown/30 focus:border-primary/50 outline-0 lg:text-lg placeholder:text-dark-brown/80"
             onKeyDown={(e) => e.key === "Enter" && onSubmitCustomQuestion()}
           />
           <motion.button
             onClick={onSubmitCustomQuestion}
-            className="px-4 py-2 text-white transition-colors duration-200 rounded-lg bg-accent hover:bg-accent/90"
+            className="px-4 py-2 text-base text-white transition-colors duration-200 rounded-lg bg-accent hover:bg-accent/90 lg:text-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -50,7 +50,7 @@ export default function CustomQuestionInput({
       ) : (
         <motion.button
           onClick={() => onShowCustomInput(true)}
-          className="flex items-center w-full gap-2 px-4 py-3 transition-colors duration-200 border rounded-lg text-dark-brown border-primary/80 hover:bg-primary/5"
+          className="flex items-center w-full gap-2 px-4 py-3 text-base transition-colors duration-200 bg-white border rounded-lg text-dark-brown border-primary/80 hover:bg-white/50 lg:text-lg"
           whileHover={{ x: 2 }}
           whileTap={{ scale: 0.98 }}
         >

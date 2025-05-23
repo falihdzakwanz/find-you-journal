@@ -23,7 +23,7 @@ export default function QuestionSuggestions({
     >
       <motion.button
         onClick={onToggleSuggestions}
-        className="flex items-center justify-between w-full px-4 py-3 text-left transition-colors duration-200 border rounded-lg border-primary/80 hover:bg-primary/5"
+        className="flex items-center justify-between w-full px-4 py-3 text-base text-left transition-colors duration-200 bg-white border rounded-lg border-primary/80 hover:bg-white/50 lg:text-lg"
         whileTap={{ scale: 0.98 }}
       >
         <span className="text-dark-brown">
@@ -76,7 +76,7 @@ export default function QuestionSuggestions({
               <motion.button
                 key={i}
                 onClick={() => onAddQuestion(q)}
-                className="block w-full px-4 py-2 text-left transition-all duration-200 border rounded-lg text-dark-brown border-primary/50 bg-neutral/30 hover:bg-primary/5"
+                className="block w-full px-4 py-2 text-base text-left transition-all duration-200 bg-white border rounded-lg text-dark-brown border-primary/50 hover:bg-white/50 lg:text-lg"
                 whileHover={{ x: 4 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, x: -10 }}

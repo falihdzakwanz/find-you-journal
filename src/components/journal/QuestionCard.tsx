@@ -20,7 +20,7 @@ export default function QuestionCard({
 }: QuestionCardProps) {
   return (
     <motion.div
-      className="border rounded-lg border-primary/80"
+      className="bg-white border rounded-lg border-primary/80"
       layout
       initial={{ opacity: 0, y: 10, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -33,9 +33,9 @@ export default function QuestionCard({
     >
       <div
         onClick={() => onToggleExpand(index)}
-        className="flex items-center justify-between w-full px-4 py-3 text-left transition-colors duration-200 rounded-t-lg cursor-pointer hover:bg-primary/5"
+        className="flex items-center justify-between w-full px-4 py-3 text-left transition-colors duration-200 rounded-t-lg cursor-pointer hover:bg-primary/3"
       >
-        <span className="font-medium text-dark-brown">{answer.question}</span>
+        <span className="text-base font-medium text-dark-brown lg:text-lg">{answer.question}</span>
         <div className="flex items-center gap-2">
           <motion.button
             onClick={(e) => {
@@ -108,7 +108,7 @@ export default function QuestionCard({
           >
             <div className="px-4 pt-1 pb-4">
               <textarea
-                className="w-full h-32 p-3 transition-all duration-200 border rounded-lg text-dark-brown border-primary/40 focus:ring-2 focus:ring-dark-brown/30 focus:border-primary/50 outline-0"
+                className="w-full h-32 p-3 text-base transition-all duration-200 border border-none rounded-lg text-dark-brown focus:ring-2 focus:ring-accent/50 focus:border-primary/50 outline-0 placeholder:text-dark-brown/80 bg-neutral/80 lg:text-lg"
                 placeholder="Write your thoughts here..."
                 value={answer.answer}
                 onChange={(e) => onAnswerChange(index, e.target.value)}
