@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth/options";
 import { getJournalEntry } from "@/lib/firebase/services";
 import { redirect } from "next/navigation";
 import EditJournalForm from "@/components/EditJournalForm";
-import formatDateIndo from "@/utils/formatDateIndo";
+import formatDateIndo from "@/utils/formatDate";
 
 interface Params {
   date: string;

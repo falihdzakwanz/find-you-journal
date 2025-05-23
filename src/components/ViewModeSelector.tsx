@@ -1,4 +1,5 @@
 import { ViewMode } from "@/types/viewMode.type";
+import { motion } from "framer-motion";
 
 type Props = {
   viewMode: ViewMode;
@@ -7,27 +8,32 @@ type Props = {
 
 export default function ViewModeSelector({ viewMode, setViewMode }: Props) {
   return (
-    <div className="relative w-full sm:w-48">
+    <motion.div
+      className="relative w-full sm:w-56"
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 400 }}
+    >
       <select
         value={viewMode}
         onChange={(e) => setViewMode(e.target.value as ViewMode)}
-        className="block w-full px-3 py-2 text-base transition-colors border rounded-md cursor-pointer appearance-none bg-neutral border-neutral-300 focus:outline-none lg:px-4 lg:py-2.5 lg:text-lg"
+        className="block w-full px-4 py-2.5 text-base md:text-lg transition-all duration-300 border-2 rounded-lg cursor-pointer appearance-none bg-white border-primary/30 text-dark-brown focus:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
       >
-        <option value="daily" className="text-xs lg:text-base">
-          Harian
+        <option value="daily" className="text-xs md:text-base">
+          Daily
         </option>
-        <option value="weekly" className="text-xs lg:text-base">
-          Mingguan
+        <option value="weekly" className="text-xs md:text-base">
+          Weekly
         </option>
-        <option value="monthly" className="text-xs lg:text-base">Bulanan</option>
+        <option value="monthly" className="text-xs md:text-base">
+          Monthly
+        </option>
       </select>
-      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
         <svg
-          className="w-5 h-5 text-neutral-400"
+          className="w-6 h-6 text-primary"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          aria-hidden="true"
         >
           <path
             fillRule="evenodd"
@@ -36,6 +42,6 @@ export default function ViewModeSelector({ viewMode, setViewMode }: Props) {
           />
         </svg>
       </div>
-    </div>
+    </motion.div>
   );
 }

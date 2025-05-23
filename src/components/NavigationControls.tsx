@@ -32,12 +32,13 @@ export default function NavigationControls({
   if (!change) return null;
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <motion.button
         onClick={() => change("prev")}
-        className="px-3 py-1 text-sm text-white rounded bg-primary lg:text-base"
+        className="flex items-center px-4 py-2 text-base font-medium text-white rounded-lg md:text-lg bg-primary"
         whileHover={{
           scale: 1.05,
+          backgroundColor: "var(--color-accent)",
         }}
         whileTap={{
           scale: 0.95,
@@ -48,14 +49,15 @@ export default function NavigationControls({
           damping: 10,
         }}
       >
-        &larr; <span className="hidden lg:inline">Sebelumnya</span>
+        ←<span className="hidden ml-2 lg:inline">Previous</span>
       </motion.button>
 
       <motion.button
         onClick={() => change("next")}
-        className="px-3 py-1 text-sm text-white rounded bg-primary lg:text-base"
+        className="flex items-center px-4 py-2 text-base font-medium text-white rounded-lg md:text-lg bg-primary"
         whileHover={{
           scale: 1.05,
+          backgroundColor: "var(--color-accent)",
         }}
         whileTap={{
           scale: 0.95,
@@ -66,7 +68,7 @@ export default function NavigationControls({
           damping: 10,
         }}
       >
-        <span className="hidden lg:inline">Berikutnya</span> &rarr;
+        <span className="hidden mr-2 lg:inline">Next</span>→
       </motion.button>
     </div>
   );

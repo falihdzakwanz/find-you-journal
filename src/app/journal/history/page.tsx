@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import JournalHistorySkeleton from "@/components/JournalHistorySkeleton";
-import formatDateIndo from "@/utils/formatDateIndo";
+import { formatDateEng } from "@/utils/formatDate";
 import { groupEntries } from "@/utils/groupEntries";
 import { useJournalFilters } from "@/hooks/useJournalFilters";
 import useJournalHistory from "@/hooks/useJournalHistory";
-import ModalDetail from "@/components/ModalDetail";
+import ModalDetails from "@/components/ModalDetails";
 import NavigationControls from "@/components/NavigationControls";
 import ViewModeSelector from "@/components/ViewModeSelector";
 import { Entry } from "@/types/entry.type";
@@ -33,10 +33,10 @@ export default function JournalHistoryPage() {
     handleDelete,
     toggleEntry,
     toggleDate,
-    loading
+    loading,
   } = useJournalHistory();
 
-  if (loading === true) return <JournalHistorySkeleton />;
+  if (loading) return <JournalHistorySkeleton />;
 
   const grouped = groupEntries(entries, viewMode);
 
@@ -53,10 +53,27 @@ export default function JournalHistoryPage() {
   });
 
   return (
-    <main className="w-full max-w-sm px-4 py-10 mx-auto text-base md:max-w-md lg:max-w-3xl">
-      <h1 className="mb-4 text-2xl font-bold lg:text-3xl">Riwayat Jurnal</h1>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-sm px-4 py-10 mx-auto md:max-w-md lg:max-w-3xl"
+    >
+      <motion.h1
+        className="mb-6 text-2xl font-bold lg:text-3xl text-dark-brown"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        Journal History
+      </motion.h1>
 
-      <div className="flex flex-row justify-between gap-2 mb-6">
+      <motion.div
+        className="flex flex-row items-center justify-between gap-4 mb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <ViewModeSelector viewMode={viewMode} setViewMode={setViewMode} />
         <NavigationControls
           viewMode={viewMode}
@@ -64,13 +81,18 @@ export default function JournalHistoryPage() {
           changeWeek={changeWeek}
           changeMonth={changeMonth}
         />
-      </div>
+      </motion.div>
 
-      <div className="space-y-6">
+      <motion.div
+        className="space-y-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
         {visibleKeys.length === 0 ? (
           <EmptyState />
         ) : (
-          visibleKeys.map((groupKey) => {
+          visibleKeys.map((groupKey, index) => {
             const count =
               viewMode === "daily"
                 ? (grouped[groupKey] as Entry[]).length
@@ -81,15 +103,20 @@ export default function JournalHistoryPage() {
             return (
               <motion.div
                 key={groupKey}
-                className="space-y-3"
-                initial={{ opacity: 0, y: 10 }}
+                className="space-y-4"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{
+                  delay: 0.4 + index * 0.1,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 10,
+                }}
               >
                 <GroupHeader
                   title={
                     viewMode === "daily"
-                      ? formatDateIndo(groupKey)
+                      ? formatDateEng(groupKey)
                       : viewMode === "weekly"
                       ? `Minggu ${groupKey}`
                       : `Bulan ${groupKey}`
@@ -97,7 +124,7 @@ export default function JournalHistoryPage() {
                   count={count}
                 />
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {viewMode === "daily"
                     ? (grouped[groupKey] as Entry[]).map((entry) => (
                         <EntryItem
@@ -129,14 +156,14 @@ export default function JournalHistoryPage() {
             );
           })
         )}
-      </div>
+      </motion.div>
 
       {selectedEntry && (
-        <ModalDetail
+        <ModalDetails
           selectedEntry={selectedEntry}
           setSelectedEntry={setSelectedEntry}
         />
       )}
-    </main>
+    </motion.main>
   );
 }
