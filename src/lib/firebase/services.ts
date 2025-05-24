@@ -1,15 +1,9 @@
 
+import { JournalEntry } from "@/types/entry.type";
 import app from "./config";
-import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, addDoc } from "firebase/firestore";
+import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, addDoc, writeBatch } from "firebase/firestore";
 
 export const db = getFirestore(app);
-
-type JournalEntry = {
-  answer: string;
-  createdAt: string;
-  date: string;
-  question: string;
-};
   
 export async function saveJournalEntries(
   userId: string,
@@ -91,3 +85,49 @@ export async function getJournalEntry(userId: string, id: string) {
   };
 }
 
+export async function deleteUserData(userId: string): Promise<boolean> {
+  try {
+    if (!userId) throw new Error("User ID is required");
+
+    const batch = writeBatch(db);
+    const entriesRef = collection(db, "journals", userId, "entries");
+    const userDocRef = doc(db, "journals", userId);
+
+    // Delete all entries
+    const entriesSnapshot = await getDocs(entriesRef);
+    let hasOperations = false;
+
+    if (!entriesSnapshot.empty) {
+      entriesSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+        hasOperations = true;
+      });
+    } else {
+      console.log("No journal entries found to delete");
+    }
+
+    // Check if user document exists before deleting
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      batch.delete(userDocRef);
+      hasOperations = true;
+    } else {
+      console.log("User document not found");
+    }
+
+    // Only commit if there are operations to perform
+    if (hasOperations) {
+      await batch.commit();
+      console.log("Successfully deleted user data");
+      return true;
+    }
+
+    return false;
+  } catch (error: unknown) {
+    console.error("Error deleting user data:", error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to delete user data: ${error.message}`);
+    }
+    throw new Error("Failed to delete user data due to unknown error");
+  }
+}

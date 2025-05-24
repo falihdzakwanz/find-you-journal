@@ -5,3 +5,11 @@ export type Entry = {
   createdAt: string;
   date: string;
 };
+
+export type JournalEntry = {
+  answer: string;
+  createdAt: string;
+  date: string;
+  question: string;
+  category?: string;
+};

@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, Info, BookOpen, PencilLine, LogOut } from "lucide-react";
+import { Home, Info, BookOpen, PencilLine, LogOut, User } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
 
   const navLinks = [
@@ -117,13 +118,53 @@ export default function Navbar() {
           })}
 
           {isLoggedIn ? (
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="flex items-center gap-2 px-3 py-1 text-lg text-red-500 bg-white rounded-md hover:underline lg:text-xl max-w-fit"
-            >
-              <LogOut size={18} />
-              Logout
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-2 px-3 py-1 text-lg text-white rounded-md hover:underline lg:text-xl max-w-fit"
+              >
+                {session?.user?.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt="Profile"
+                    width={28}
+                    height={28}
+                    className="w-7 h-7 rounded-full"
+                  />
+                ) : (
+                  <User size={20} />
+                )}
+              </button>
+
+              <AnimatePresence>
+                {isProfileOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg"
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    <div className="py-1">
+                      <Link
+                        href="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        className="flex items-center w-full px-4 py-2 text-sm text-left text-red-500 hover:bg-gray-100"
+                      >
+                        <LogOut size={16} className="mr-2" />
+                        Logout
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <button
               onClick={() => signIn("google")}
@@ -176,13 +217,22 @@ export default function Navbar() {
                 );
               })}
               {isLoggedIn ? (
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit"
-                >
-                  <LogOut size={18} />
-                  Logout
-                </button>
+                <>
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 px-4 py-2 text-lg text-white rounded-lg hover:underline max-w-fit"
+                  >
+                    <User size={18} />
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit"
+                  >
+                    <LogOut size={18} />
+                    Logout
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={() => signIn("google")}
