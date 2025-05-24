@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
-import JournalTodaySkeleton from "@/components/Skeleton/JournalTodaySkeleton";
+import JournalTodaySkeleton from "@/components/SkeletonLoading/JournalTodaySkeleton";
 import JournalHeader from "@/components/journal/JournalHeader";
 import QuestionCard from "@/components/journal/QuestionCard";
 import QuestionSuggestions from "@/components/journal/QuestionSuggestions";

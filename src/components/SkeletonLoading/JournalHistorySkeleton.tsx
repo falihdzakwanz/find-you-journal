@@ -1,4 +1,4 @@
-import Skeleton from "./Index";
+import Skeleton from "./Skeleton";
 
 export default function JournalHistorySkeleton() {
   return (
@@ -19,9 +19,9 @@ export default function JournalHistorySkeleton() {
       </section>
 
       <section className="flex flex-col space-y-4">
-        {[1, 2, 3].map((_, groupIdx) => (
+        {[1, 2].map((_, groupIdx) => (
           <div key={groupIdx} className="overflow-hidden rounded shadow-sm">
-            <div className="flex items-center justify-between p-4 py-6 bg-gray-100/50">
+            <div className="flex items-center justify-between p-4 py-6 bg-primary/10">
               <Skeleton className="w-3/4 h-5 rounded" />
               <Skeleton className="w-5 h-5 rounded-full" />
             </div>

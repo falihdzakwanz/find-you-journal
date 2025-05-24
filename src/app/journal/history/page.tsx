@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import JournalHistorySkeleton from "@/components/Skeleton/JournalHistorySkeleton";
+import JournalHistorySkeleton from "@/components/SkeletonLoading/JournalHistorySkeleton";
 import { formatDateEng } from "@/utils/formatDate";
 import { groupEntries } from "@/utils/groupEntries";
 import { useJournalFilters } from "@/hooks/useJournalFilters";

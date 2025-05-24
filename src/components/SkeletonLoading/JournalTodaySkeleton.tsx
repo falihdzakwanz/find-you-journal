@@ -1,5 +1,5 @@
 import React from "react";
-import Skeleton from "./Index";
+import Skeleton from "./Skeleton";
 
 const JournalTodaySkeleton = () => {
   return (
