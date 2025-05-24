@@ -1,3 +1,4 @@
+import Footer from "@/components/fragments/Footer";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -9,11 +10,11 @@ export default function AboutPage() {
         </div>
         <h1 className="font-serif text-3xl font-bold sm:text-4xl">Find You</h1>
       </div>
-      <p className="mb-2 italic text-center text-accent">
+      <p className="mb-2 italic text-center text-accent text-2xl sm:text-3xl">
         &quot;The journal that helps you discover yourself&quot;
       </p>
 
-      <div className="mb-10 border-b border-gray-200"></div>
+      <div className="mb-10 border-b border-primary/20"></div>
 
       <p className="mb-5 sm:text-lg">
         <strong>Find You</strong> is a reflective journal designed to guide you
@@ -124,14 +125,14 @@ export default function AboutPage() {
             “After 3 months with Find You, I discovered career aspirations
             I&apos;d buried for years. The reflection exercises unearthed what I
             truly wanted.”
-            <span className="block mt-2 text-sm text-gray-600">
+            <span className="block mt-2 text-sm text-primary">
               – Sarah, 28 • Graphic Designer
             </span>
           </blockquote>
           <blockquote className="p-6 italic border-l-4 rounded-lg bg-amber-50 border-accent sm:text-lg">
             “The privacy gave me courage to write honestly. For the first time,
             my journal feels like <em>me</em> – not who I think I should be.”
-            <span className="block mt-2 text-sm text-gray-600">
+            <span className="block mt-2 text-sm text-primary">
               – David, 35 • Teacher
             </span>
           </blockquote>
@@ -186,6 +187,8 @@ export default function AboutPage() {
           </svg>
         </Link>
       </div>
+
+      <Footer />
     </main>
   );
 }
