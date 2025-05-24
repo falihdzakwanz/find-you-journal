@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ProfileSkeleton from "@/components/SkeletonLoading/ProfileSkeleton";
+import ProfileSkeleton from "@/components/skeletonLoading/ProfileSkeleton";
 import StatCard from "@/components/profile/StatCard";
 import StatItem from "@/components/profile/StatItem";
 import HighlightCard from "@/components/profile/HighlightCard";
