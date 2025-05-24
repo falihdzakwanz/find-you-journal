@@ -6,7 +6,7 @@ import { formatDateEng } from "@/utils/formatDate";
 import { groupEntries } from "@/utils/groupEntries";
 import { useJournalFilters } from "@/hooks/useJournalFilters";
 import useJournalHistory from "@/hooks/useJournalHistory";
-import ModalDetails from "@/components/Modal/ModalDetails";
+import ModalDetails from "@/components/modal/ModalDetails";
 import NavigationControls from "@/components/journal/NavigationControls";
 import ViewModeSelector from "@/components/journal/ViewModeSelector";
 import { Entry } from "@/types/entry.type";
