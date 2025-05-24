@@ -18,10 +18,10 @@ export const AuthButton = ({
   if (isAuthenticated) {
     return (
       <div className="flex flex-col space-y-4 w-full max-w-xs">
-        <p className="mb-6 text-lg text-accent">Welcome, {userName}</p>
+        <p className="mb-6 text-lg text-accent md:text-xl">Welcome, {userName}</p>
         <motion.button
           onClick={onWriteClick}
-          className="bg-primary text-white font-semibold py-3 px-6 rounded-lg shadow-md"
+          className="bg-primary text-white font-semibold py-3 px-6 rounded-lg shadow-md text-lg md:text-xl"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           whileFocus={{
@@ -39,7 +39,7 @@ export const AuthButton = ({
   return (
     <motion.button
       onClick={() => signIn("google")}
-      className="bg-primary text-white py-3.5 px-7 rounded-lg font-bold shadow-md flex items-center gap-2"
+      className="bg-primary text-white py-3.5 px-7 rounded-lg font-bold shadow-md flex items-center gap-2 text-lg md:text-xl"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       whileFocus={{

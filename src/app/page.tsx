@@ -21,9 +21,9 @@ export default function Home() {
   return (
     <main className="flex flex-col-reverse h-screen items-center justify-center md:justify-evenly lg:justify-between mx-auto lg:flex-row gap-8 px-4 py-10 overflow-hidden lg:px-16">
       {/* Text Content */}
-      <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left md:w-3/5">
+      <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left md:w-3/4">
         <motion.h1
-          className="mb-6 text-2xl md:text-3xl font-bold lg:text-4xl text-dark-brown leading-tight"
+          className="mb-5 text-3xl md:text-4xl font-bold lg:text-5xl text-dark-brown leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -41,13 +41,13 @@ export default function Home() {
 
       {/* Carousel with Blob Background */}
       <motion.div
-        className="relative w-5/6 md:w-3/5 lg:w-2/5"
+        className="relative w-full md:w-3/4 lg:w-[45%]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.5 }}
       >
         <BlobBackground color="#FFBB70" />
-        <Carousel images={images} interval={4000} className="h-64 md:h-80" />
+        <Carousel images={images} interval={4000} className="h-60 md:h-84" />
       </motion.div>
     </main>
   );
