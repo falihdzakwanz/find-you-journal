@@ -5,9 +5,9 @@ export default function EmptyState() {
     <motion.p
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="text-center text-primary"
+      className="text-center text-primary md:text-lg lg:text-xl"
     >
-      Tidak ada entri pada periode ini.
+      No entries for this period.
     </motion.p>
   );
 }

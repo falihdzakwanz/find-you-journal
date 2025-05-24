@@ -9,23 +9,32 @@ export default function useJournalHistory() {
     new Set()
   );
   const [expandedDates, setExpandedDates] = useState<Set<string>>(new Set());
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
   const { entries, setEntries, loading } = useJournalEntries();
 
-  const handleDelete = async (id: string) => {
-    const confirmDelete = confirm("Hapus jurnal?");
-    if (!confirmDelete) return;
+  const handleDeleteInit = (id: string) => {
+    setEntryToDelete(id);
+    setDeleteModalOpen(true);
+  };
 
-    const loadingToast = toast.loading("Menghapus...");
-    const res = await fetch(`/api/journal/entry?id=${id}`, {
+  const handleDeleteConfirm = async () => {
+    if (!entryToDelete) return;
+
+    const loadingToast = toast.loading("Deleting...");
+    const res = await fetch(`/api/journal/entry?id=${entryToDelete}`, {
       method: "DELETE",
     });
 
     if (res.ok) {
-      setEntries((prev) => prev.filter((e) => e.id !== id));
-      toast.success("Berhasil Menghapus Entry", { id: loadingToast });
+      setEntries((prev) => prev.filter((e) => e.id !== entryToDelete));
+      toast.success("Entry deleted successfully", { id: loadingToast });
     } else {
-      toast.error("Gagal menghapus entri.", { id: loadingToast });
+      toast.error("Failed to delete entry", { id: loadingToast });
     }
+
+    setDeleteModalOpen(false);
+    setEntryToDelete(null);
   };
 
   const toggleEntry = (id: string) => {
@@ -58,9 +67,13 @@ export default function useJournalHistory() {
     expandedEntries,
     expandedDates,
     entries,
-    handleDelete,
+    deleteModalOpen,
+    setDeleteModalOpen,
+    handleDeleteInit,
+    handleDeleteConfirm,
+    entryToDelete,
     toggleEntry,
     toggleDate,
-    loading
+    loading,
   };
 }

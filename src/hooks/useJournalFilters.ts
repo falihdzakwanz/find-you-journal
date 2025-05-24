@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ViewMode } from "@/types/viewMode.type";
 import { format, parseISO, isSameWeek, isSameMonth } from "date-fns";
-import { id } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 export function useJournalFilters(initialMode: ViewMode = "daily") {
   const [viewMode, setViewMode] = useState<ViewMode>(initialMode);
@@ -25,7 +25,7 @@ export function useJournalFilters(initialMode: ViewMode = "daily") {
     const currentDate = getCurrentDate();
 
     if (viewMode === "weekly") {
-      return isSameWeek(date, currentDate, { locale: id });
+      return isSameWeek(date, currentDate, { locale: enUS });
     } else if (viewMode === "monthly") {
       return isSameMonth(date, currentDate);
     } else {

@@ -14,6 +14,7 @@ import GroupHeader from "@/components/journal/GroupHeader";
 import EntryItem from "@/components/journal/EntryItem";
 import DateGroup from "@/components/journal/DateGroup";
 import EmptyState from "@/components/journal/EmptyState";
+import ConfirmModal from "@/components/modal/ConfirmModal";
 
 export default function JournalHistoryPage() {
   const {
@@ -30,7 +31,10 @@ export default function JournalHistoryPage() {
     expandedEntries,
     expandedDates,
     entries,
-    handleDelete,
+    deleteModalOpen,
+    setDeleteModalOpen,
+    handleDeleteInit,
+    handleDeleteConfirm,
     toggleEntry,
     toggleDate,
     loading,
@@ -118,8 +122,8 @@ export default function JournalHistoryPage() {
                     viewMode === "daily"
                       ? formatDateEng(groupKey)
                       : viewMode === "weekly"
-                      ? `Minggu ${groupKey}`
-                      : `Bulan ${groupKey}`
+                      ? `${groupKey}`
+                      : `${groupKey}`
                   }
                   count={count}
                 />
@@ -133,7 +137,7 @@ export default function JournalHistoryPage() {
                           isExpanded={expandedEntries.has(entry.id)}
                           onToggle={toggleEntry}
                           onViewDetail={setSelectedEntry}
-                          onDelete={handleDelete}
+                          onDelete={handleDeleteInit}
                         />
                       ))
                     : Object.entries(
@@ -148,7 +152,7 @@ export default function JournalHistoryPage() {
                           expandedEntries={expandedEntries}
                           onToggleEntry={toggleEntry}
                           onViewDetail={setSelectedEntry}
-                          onDelete={handleDelete}
+                          onDelete={handleDeleteInit}
                         />
                       ))}
                 </div>
@@ -164,6 +168,16 @@ export default function JournalHistoryPage() {
           setSelectedEntry={setSelectedEntry}
         />
       )}
+
+      <ConfirmModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Journal Entry"
+        message="Are you sure you want to delete this entry? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </motion.main>
   );
 }

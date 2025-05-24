@@ -27,19 +27,26 @@ export default function DateGroup({
   onDelete,
 }: DateGroupProps) {
   return (
-    <motion.div
-      className="overflow-hidden border rounded-lg shadow-sm border-neutral-200 bg-neutral"
-      whileHover={{ scale: 1.01 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <button
+    <div>
+      <motion.button
         onClick={() => onToggleDate(date)}
-        className="flex items-center justify-between w-full p-4 text-left transition-colors duration-200 hover:bg-secondary/50"
+        className="flex items-center justify-between w-full p-5 overflow-hidden text-left transition-all bg-white border shadow-lg hover:from-primary/15 hover:to-primary/25 rounded-x rounded-xl border-primary/40"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{
+          scale: 1.02,
+          boxShadow: "0 8px 25px rgba(237, 148, 85, 0.15)",
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 15,
+        }}
       >
-        <h3 className="font-medium text-primary-800">
+        <h3 className="text-lg font-medium text-dark-brown ">
           {date}
-          <span className="ml-2 text-sm font-normal text-neutral-500">
-            ({entries.length} entri)
+          <span className="ml-2 text-sm font-normal lg:text-base">
+            ({entries.length} {entries.length === 1 ? "entry" : "entries"})
           </span>
         </h3>
         <motion.div
@@ -48,7 +55,7 @@ export default function DateGroup({
         >
           <ChevronDown className="w-5 h-5 text-accent" />
         </motion.div>
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {isExpanded && (
@@ -56,10 +63,10 @@ export default function DateGroup({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="p-4 space-y-3 border-t border-neutral-200">
+            <div className="p-4 pr-0 space-y-3">
               {entries.map((entry) => (
                 <EntryItem
                   key={entry.id}
@@ -74,6 +81,6 @@ export default function DateGroup({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }

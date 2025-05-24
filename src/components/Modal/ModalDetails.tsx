@@ -28,9 +28,9 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       >
         <motion.div
-          initial={{ y: 20, opacity: 0, scale: 0.98 }}
+          initial={{ y: 10, opacity: 0, scale: 0.98 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
-          exit={{ y: 20, opacity: 0, scale: 0.98 }}
+          exit={{ y: 10, opacity: 0, scale: 0.98 }}
           transition={{
             type: "spring",
             damping: 25,
@@ -84,11 +84,10 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
               <motion.button
                 whileHover={{
                   scale: 1.05,
-                  backgroundColor: "var(--color-neutral)",
                 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedEntry(null)}
-                className="flex items-center px-5 py-2 text-sm font-medium transition-all bg-white border rounded-lg text-dark-brown border-primary/30 hover:shadow-sm"
+                className="flex items-center px-5 py-2 text-sm font-medium transition-all bg-white border rounded-lg text-dark-brown border-primary/30 hover:shadow-sm hover:bg-gray-100"
               >
                 <X className="w-4 h-4 mr-2" />
                 Close

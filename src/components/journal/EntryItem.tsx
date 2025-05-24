@@ -117,7 +117,7 @@ export default function EntryItem({
 
                 <motion.button
                   onClick={() => onDelete(entry.id)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-all bg-red-400 rounded-lg hover:bg-accent md:text-base"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-all bg-red-500 rounded-lg hover:bg-red-600 md:text-base"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 4px 12px rgba(226, 94, 62, 0.3)",
