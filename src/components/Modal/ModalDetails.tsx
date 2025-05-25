@@ -36,7 +36,7 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
             damping: 25,
             stiffness: 300,
           }}
-          className="w-full max-w-2xl overflow-hidden border-2 shadow-xl bg-neutral rounded-xl border-primary/20"
+          className="flex flex-col w-full max-w-2xl max-h-[90vh] overflow-hidden border-2 shadow-xl bg-neutral rounded-xl border-primary/20"
         >
           {/* Header */}
           <motion.div
@@ -44,8 +44,8 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
             whileHover={{ backgroundColor: "var(--color-accent)" }}
             transition={{ duration: 0.3 }}
           >
-            <div>
-              <h2 className="text-xl font-bold text-white line-clamp-2">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-bold text-white truncate">
                 {selectedEntry.question}
               </h2>
               <p className="mt-1 text-sm text-white/90">
@@ -54,7 +54,7 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
             </div>
             <motion.button
               onClick={() => setSelectedEntry(null)}
-              className="p-1 text-white transition-colors duration-200 rounded-full hover:text-red-300 focus:outline-none"
+              className="flex-shrink-0 p-1 text-white transition-colors duration-200 rounded-full hover:text-red-300 focus:outline-none"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               aria-label="Close modal"
@@ -63,24 +63,28 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
             </motion.button>
           </motion.div>
 
-          {/* Content */}
-          <motion.div
-            className="p-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="mb-6">
-              <label className="block mb-3 text-sm font-medium text-dark-brown">
-                Your Response
-              </label>
-              <div className="p-4 whitespace-pre-wrap bg-white border rounded-lg text-dark-brown border-primary/20">
-                {selectedEntry.answer}
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto">
+            <motion.div
+              className="p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="mb-6">
+                <label className="block mb-3 text-sm font-medium text-dark-brown">
+                  Your Response
+                </label>
+                <pre className="p-4 max-h-[50vh] overflow-y-auto font-sans text-base whitespace-pre-wrap break-words bg-white border rounded-lg text-dark-brown border-primary/20">
+                  {selectedEntry.answer}
+                </pre>
               </div>
-            </div>
+            </motion.div>
+          </div>
 
-            {/* Footer Buttons */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-primary/20">
+          {/* Footer Buttons */}
+          <div className="p-6 border-t border-primary/20">
+            <div className="flex justify-end gap-3">
               <motion.button
                 whileHover={{
                   scale: 1.05,
@@ -107,7 +111,7 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
                 </Link>
               </motion.div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

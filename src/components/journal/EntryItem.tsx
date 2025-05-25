@@ -21,7 +21,7 @@ export default function EntryItem({
   onDelete,
 }: EntryItemProps) {
   const [showFullAnswer, setShowFullAnswer] = useState(false);
-  const maxLength = 150;
+  const maxLength = 140;
   const shouldTruncate = entry.answer.length > maxLength;
   const displayedAnswer = showFullAnswer
     ? entry.answer
@@ -70,14 +70,16 @@ export default function EntryItem({
             className="overflow-hidden bg-white"
           >
             <div className="p-5 text-lg border-t border-primary/20 text-dark-brown">
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="leading-relaxed whitespace-pre-wrap"
+                className="overflow-hidden"
               >
-                {displayedAnswer}
-              </motion.p>
+                <pre className="max-h-[400px] overflow-y-auto font-sans whitespace-pre-wrap break-words">
+                  {displayedAnswer}
+                </pre>
+              </motion.div>
 
               {shouldTruncate && (
                 <motion.button
