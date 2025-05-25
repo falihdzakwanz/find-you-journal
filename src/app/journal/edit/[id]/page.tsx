@@ -4,6 +4,7 @@ import { getJournalEntry } from "@/lib/firebase/services";
 import { redirect } from "next/navigation";
 import EditJournalForm from "@/components/journal/EditJournalForm";
 import {formatDateEng} from "@/utils/formatDate";
+import { decrypt } from "@/lib/webCrypto/encryption";
 
 interface Params {
   id: string;
@@ -21,6 +22,11 @@ export default async function EditJournalPage({ params }: { params: Params }) {
       redirect("/journal/history");
     }
 
+    const decryptedEntry = {
+      ...entry,
+      answer: await decrypt(entry.answer),
+    };
+
     return (
       <main className="max-w-3xl px-4 py-10 mx-auto">
         <div className="mb-8">
@@ -28,10 +34,10 @@ export default async function EditJournalPage({ params }: { params: Params }) {
             {entry.question}
           </h1>
           <p className="mt-2 text-primary/80 md:text-lg">
-            {formatDateEng(entry.date)}
+            {formatDateEng(decryptedEntry.date)}
           </p>
         </div>
-        <EditJournalForm initialAnswer={entry.answer} id={id} />
+        <EditJournalForm initialAnswer={decryptedEntry.answer} id={id} />
       </main>
     );
   } catch (error) {

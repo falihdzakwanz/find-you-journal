@@ -2,14 +2,14 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Eye, Trash2, ChevronRight } from "lucide-react";
-import { Entry } from "@/types/entry.type";
+import { JournalEntry } from "@/types/entry.type";
 import { useState } from "react";
 
 interface EntryItemProps {
-  entry: Entry;
+  entry: JournalEntry;
   isExpanded: boolean;
   onToggle: (id: string) => void;
-  onViewDetail: (entry: Entry) => void;
+  onViewDetail: (entry: JournalEntry) => void;
   onDelete: (id: string) => void;
 }
 

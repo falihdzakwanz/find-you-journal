@@ -1,45 +1,33 @@
 
-import { JournalEntry } from "@/types/entry.type";
+import { JournalEntry, EncryptedJournalEntry } from "@/types/entry.type";
 import app from "./config";
-import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, addDoc, writeBatch } from "firebase/firestore";
+import { doc, getFirestore, collection, getDocs, deleteDoc, updateDoc, getDoc, writeBatch, DocumentData } from "firebase/firestore";
 
 export const db = getFirestore(app);
   
 export async function saveJournalEntries(
   userId: string,
-  entries: { answer: string; question: string }[]
+  entries: Omit<JournalEntry, "id">[]
 ) {
   const entriesRef = collection(db, "journals", userId, "entries");
+  const batch = writeBatch(db);
 
-  const today = new Date();
-  const clientTimezoneOffset = today.getTimezoneOffset() * 60000;
-  const localDate = new Date(today.getTime() - clientTimezoneOffset);
-  const dateString = localDate.toISOString().split("T")[0];
+  entries.forEach((entry) => {
+    const docRef = doc(entriesRef);
+    batch.set(docRef, entry);
+  });
 
-  const promises = entries.map(({ answer, question }) =>
-    addDoc(entriesRef, {
-      answer,
-      question,
-      createdAt: today.toISOString(), 
-      date: dateString,
-    })
-  );
-
-  await Promise.all(promises);
+  await batch.commit();
 }
 
 export async function getJournalEntries(userId: string) {
   const entriesRef = collection(db, "journals", userId, "entries");
   const snapshot = await getDocs(entriesRef);
 
-  const entries: (JournalEntry & { id: string })[] = snapshot.docs.map(
-    (doc) => ({
-      id: doc.id,
-      ...(doc.data() as JournalEntry), 
-    })
-  );
-
-  return entries.sort((a, b) => b.date.localeCompare(a.date));
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as (JournalEntry & { id: string })[];
 }
 
 export async function deleteJournalEntry(userId: string, id: string) {
@@ -47,18 +35,20 @@ export async function deleteJournalEntry(userId: string, id: string) {
   await deleteDoc(docRef);
 }
 
+
 export async function updateJournalEntry(
   userId: string,
   id: string,
-  newAnswer: string
-) {
+  updateData: Pick<EncryptedJournalEntry, "answer" | "isEncrypted">
+): Promise<void> {
   const docRef = doc(db, "journals", userId, "entries", id);
-  await updateDoc(docRef, {
-    answer: newAnswer,
-  });
+  await updateDoc(docRef, updateData);
 }
 
-export async function getJournalEntry(userId: string, id: string) {
+export async function getJournalEntry(
+  userId: string,
+  id: string
+): Promise<JournalEntry | null> {
   const docRef = doc(db, "journals", userId, "entries", id);
   const snapshot = await getDoc(docRef);
 
@@ -66,25 +56,29 @@ export async function getJournalEntry(userId: string, id: string) {
 
   const rawData = snapshot.data();
 
-  // Validasi properti penting
-  if (
-    typeof rawData.answer !== "string" ||
-    typeof rawData.date !== "string" ||
-    typeof rawData.createdAt !== "string" ||
-    typeof rawData.question !== "string"
-  ) {
+  const isValidEntry = (
+    data: DocumentData
+  ): data is Omit<JournalEntry, "id"> => {
+    return (
+      typeof data.answer === "string" &&
+      typeof data.date === "string" &&
+      typeof data.createdAt === "string" &&
+      typeof data.question === "string" &&
+      (data.category === undefined || typeof data.category === "string") &&
+      (data.isEncrypted === undefined || typeof data.isEncrypted === "boolean")
+    );
+  };
+
+  if (!isValidEntry(rawData)) {
     console.warn("Invalid journal entry structure:", rawData);
     return null;
   }
 
-  const data = rawData as JournalEntry;
-
   return {
     id: snapshot.id,
-    ...data,
+    ...rawData,
   };
 }
-
 export async function deleteUserData(userId: string): Promise<boolean> {
   try {
     if (!userId) throw new Error("User ID is required");

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Entry } from "@/types/entry.type";
+import { JournalEntry } from "@/types/entry.type";
 import { useJournalEntries } from "@/hooks/useJournalEntries";
 
 export default function useJournalHistory() {
-  const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
   const [expandedEntries, setExpandedEntries] = useState<Set<string>>(
     new Set()
   );

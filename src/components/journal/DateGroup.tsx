@@ -2,17 +2,17 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { Entry } from "@/types/entry.type";
+import { JournalEntry } from "@/types/entry.type";
 import EntryItem from "./EntryItem";
 
 interface DateGroupProps {
   date: string;
-  entries: Entry[];
+  entries: JournalEntry[];
   isExpanded: boolean;
   onToggleDate: (date: string) => void;
   expandedEntries: Set<string>;
   onToggleEntry: (id: string) => void;
-  onViewDetail: (entry: Entry) => void;
+  onViewDetail: (entry: JournalEntry) => void;
   onDelete: (id: string) => void;
 }
 
@@ -64,7 +64,6 @@ export default function DateGroup({
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="overflow-hidden"
           >
             <div className="p-4 pr-0 space-y-3">
               {entries.map((entry) => (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Entry } from "@/types/entry.type";
+import { JournalEntry } from "@/types/entry.type";
 
 export function useJournalEntries() {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

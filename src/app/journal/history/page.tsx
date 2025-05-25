@@ -9,7 +9,7 @@ import useJournalHistory from "@/hooks/useJournalHistory";
 import ModalDetails from "@/components/modal/ModalDetails";
 import NavigationControls from "@/components/journal/NavigationControls";
 import ViewModeSelector from "@/components/journal/ViewModeSelector";
-import { Entry } from "@/types/entry.type";
+import { JournalEntry } from "@/types/entry.type";
 import GroupHeader from "@/components/journal/GroupHeader";
 import EntryItem from "@/components/journal/EntryItem";
 import DateGroup from "@/components/journal/DateGroup";
@@ -47,9 +47,9 @@ export default function JournalHistoryPage() {
   const visibleKeys = Object.keys(grouped).filter((key) => {
     const group = grouped[key];
     if (viewMode === "daily") {
-      return (group as Entry[]).some((entry) => isInCurrent(entry.date));
+      return (group as JournalEntry[]).some((entry) => isInCurrent(entry.date));
     } else {
-      const subGroups = group as Record<string, Entry[]>;
+      const subGroups = group as Record<string, JournalEntry[]>;
       return Object.values(subGroups).some((entries) =>
         entries.some((entry) => isInCurrent(entry.date))
       );
@@ -99,9 +99,9 @@ export default function JournalHistoryPage() {
           visibleKeys.map((groupKey, index) => {
             const count =
               viewMode === "daily"
-                ? (grouped[groupKey] as Entry[]).length
+                ? (grouped[groupKey] as JournalEntry[]).length
                 : Object.values(
-                    grouped[groupKey] as Record<string, Entry[]>
+                    grouped[groupKey] as Record<string, JournalEntry[]>
                   ).flat().length;
 
             return (
@@ -130,7 +130,7 @@ export default function JournalHistoryPage() {
 
                 <div className="space-y-4">
                   {viewMode === "daily"
-                    ? (grouped[groupKey] as Entry[]).map((entry) => (
+                    ? (grouped[groupKey] as JournalEntry[]).map((entry) => (
                         <EntryItem
                           key={entry.id}
                           entry={entry}
@@ -141,7 +141,7 @@ export default function JournalHistoryPage() {
                         />
                       ))
                     : Object.entries(
-                        grouped[groupKey] as Record<string, Entry[]>
+                        grouped[groupKey] as Record<string, JournalEntry[]>
                       ).map(([dayKey, dayEntries]) => (
                         <DateGroup
                           key={dayKey}
@@ -173,7 +173,7 @@ export default function JournalHistoryPage() {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDeleteConfirm}
-        title="Delete Journal Entry"
+        title="Delete Journal JournalEntry"
         message="Are you sure you want to delete this entry? This action cannot be undone."
         confirmText="Delete"
         cancelText="Cancel"

@@ -3,18 +3,11 @@ import { X, Edit } from "lucide-react";
 import { formatDateEng } from "@/utils/formatDate";
 import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
-
-type Entry = {
-  id: string;
-  answer: string;
-  question: string;
-  createdAt: string;
-  date: string;
-};
+import { JournalEntry } from "@/types/entry.type";
 
 interface Props {
-  selectedEntry: Entry;
-  setSelectedEntry: Dispatch<SetStateAction<Entry | null>>;
+  selectedEntry: JournalEntry;
+  setSelectedEntry: Dispatch<SetStateAction<JournalEntry | null>>;
 }
 
 const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
@@ -107,7 +100,7 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
                   className="flex items-center px-5 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary hover:bg-accent"
                 >
                   <Edit className="w-4 h-4 mr-2" />
-                  Edit Entry
+                  Edit
                 </Link>
               </motion.div>
             </div>
