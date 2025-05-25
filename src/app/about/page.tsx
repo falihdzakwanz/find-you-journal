@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export default function AboutPage() {
   return (
-    <main className="max-w-3xl px-4 py-10 mx-auto text-justify sm:px-6 lg:px-8 text-dark-brown">
+    <main className="w-full px-4 py-10 mx-auto text-justify lg:max-w-3xl md:max-w-2xl sm:px-6 lg:px-8 text-dark-brown">
       <div className="flex items-center justify-center gap-3 mb-8">
         <div className="flex items-center justify-center w-12 h-12 text-xl font-bold text-white rounded-full bg-gradient-to-br from-indigo-800 to-amber-600">
           FY
         </div>
         <h1 className="font-serif text-3xl font-bold sm:text-4xl">Find You</h1>
       </div>
-      <p className="mb-2 italic text-center text-accent text-2xl sm:text-3xl">
+      <p className="mb-2 text-2xl italic text-center text-accent sm:text-3xl">
         &quot;The journal that helps you discover yourself&quot;
       </p>
 

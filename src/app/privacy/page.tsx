@@ -1,14 +1,14 @@
 "use client";
 
+import Footer from "@/components/fragments/Footer";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen px-4 py-12 bg-neutral sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="w-full mx-auto lg:max-w-3xl md:max-w-2xl">
         {/* Header */}
-        <motion.div
+        <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -28,18 +28,11 @@ export default function PrivacyPage() {
           <h2 className="mb-2 text-3xl font-bold text-dark-brown">
             Privacy Policy
           </h2>
-          <p className="text-dark-brown/70">
-            Last Updated:{" "}
-            {new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </motion.div>
+          <p className="text-dark-brown/70">Last Updated: May 25, 2025</p>
+        </motion.header>
 
         {/* Content */}
-        <motion.div
+        <motion.main
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -93,8 +86,8 @@ export default function PrivacyPage() {
               </h3>
               <p>
                 We use Google Authentication for sign-in. Google&apos;s privacy
-                policy applies to their services. We don&apos;t share your data with
-                other third parties except:
+                policy applies to their services. We don&apos;t share your data
+                with other third parties except:
               </p>
               <ul className="pl-5 mt-2 space-y-2 list-disc">
                 <li>When required by law</li>
@@ -127,26 +120,10 @@ export default function PrivacyPage() {
               </p>
             </section>
           </div>
-        </motion.div>
+        </motion.main>
 
         {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 text-sm text-center text-dark-brown/60"
-        >
-          <p>© {new Date().getFullYear()} Find You. All rights reserved.</p>
-          <p className="mt-1">
-            <Link href="/terms" className="text-primary hover:underline">
-              Terms of Service
-            </Link>{" "}
-            |{" "}
-            <Link href="/" className="text-primary hover:underline">
-              Return to App
-            </Link>
-          </p>
-        </motion.div>
+        <Footer />
       </div>
     </div>
   );
