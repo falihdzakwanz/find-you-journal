@@ -103,7 +103,7 @@ const ModalDetails = ({ selectedEntry, setSelectedEntry }: Props) => {
                 transition={{ type: "spring", stiffness: 400 }}
               >
                 <Link
-                  href={`/journal/edit/${selectedEntry.date}/${selectedEntry.id}`}
+                  href={`/journal/edit/${selectedEntry.id}`}
                   className="flex items-center px-5 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary hover:bg-accent"
                 >
                   <Edit className="w-4 h-4 mr-2" />
