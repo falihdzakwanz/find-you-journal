@@ -13,3 +13,12 @@ export type JournalEntry = {
   question: string;
   category?: string;
 };
+
+export type JournalStats = {
+  totalEntries: number;
+  streak: number;
+  avgEntriesPerWeek: number;
+  mostActiveDay: string;
+  longestEntry: number;
+  categories: Record<string, number>;
+};
