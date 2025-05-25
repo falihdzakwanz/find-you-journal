@@ -20,23 +20,56 @@ export default function Home() {
 
   return (
     <main className="flex flex-col-reverse h-screen items-center justify-center md:justify-evenly lg:justify-between mx-auto lg:flex-row gap-8 px-4 py-10 overflow-hidden lg:px-16">
-      {/* Text Content */}
       <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left md:w-3/4">
-        <motion.h1
+        {/* Text Animation */}
+        <motion.div
           className="mb-5 text-3xl md:text-4xl font-bold lg:text-5xl text-dark-brown leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          &quot;Discover yourself, reflect on your journey, and grow every
-          day.&quot;
-        </motion.h1>
+          <div className="flex flex-wrap justify-center lg:justify-start">
+            {"Discover yourself, reflect on your journey, and grow every day."
+              .split(" ")
+              .map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: i * 0.3,
+                    type: "spring",
+                    stiffness: 100,
+                  }}
+                  className="mr-2"
+                >
+                  {word}
+                </motion.span>
+              ))}
+          </div>
+        </motion.div>
 
-        <AuthButton
-          isAuthenticated={!!session}
-          userName={session?.user?.name}
-          onWriteClick={() => router.push("/journal/today")}
-        />
+        {/* Auth Button - Appears after text animation completes */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay:
+              0.3 *
+                "Discover yourself, reflect on your journey, and grow every day.".split(
+                  " "
+                ).length +
+              0.5,
+            duration: 0.5,
+          }}
+        >
+          <AuthButton
+            isAuthenticated={!!session}
+            userName={session?.user?.name}
+            onWriteClick={() => router.push("/journal/today")}
+          />
+        </motion.div>
       </div>
 
       {/* Carousel with Blob Background */}
