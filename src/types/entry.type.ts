@@ -34,3 +34,9 @@ export interface JournalStats {
   longestEntry: number;
   categories: Record<string, number>;
 }
+export interface JournalTodayEntry {
+  question: string;
+  answer: string;
+  expanded: boolean;
+  isCustom?: boolean;
+};

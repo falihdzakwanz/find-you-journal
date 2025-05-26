@@ -1,10 +1,3 @@
-export type Answer = {
-  question: string;
-  answer: string;
-  expanded: boolean;
-  isCustom?: boolean;
-};
-
 export const allQuestions = [
   "How was your day today?",
   "What are you grateful for today?",

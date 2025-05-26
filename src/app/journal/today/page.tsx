@@ -11,13 +11,14 @@ import QuestionCard from "@/components/journal/QuestionCard";
 import QuestionSuggestions from "@/components/journal/QuestionSuggestions";
 import CustomQuestionInput from "@/components/journal/CustomQuestionInput";
 import SubmitButton from "@/components/ui/SubmitButton";
-import { Answer, allQuestions } from "@/types/questionAndAnswer";
+import { JournalTodayEntry } from "@/types/entry.type";
+import { allQuestions } from "@/lib/questions";
 
 export default function JournalTodayPage() {
   const { status } = useSession();
   const router = useRouter();
 
-  const [answers, setAnswers] = useState<Answer[]>([
+  const [entries, setEntries] = useState<JournalTodayEntry[]>([
     { question: allQuestions[0], answer: "", expanded: true },
   ]);
   const [customQuestion, setCustomQuestion] = useState("");
@@ -27,7 +28,7 @@ export default function JournalTodayPage() {
   const [todayDate, setTodayDate] = useState("");
 
   const suggestionQuestions = allQuestions.filter(
-    (q) => !answers.some((a) => a.question === q)
+    (q) => !entries.some((a) => a.question === q)
   );
 
   useEffect(() => {
@@ -42,16 +43,16 @@ export default function JournalTodayPage() {
   }, []);
 
   const handleAddQuestion = (q: string) => {
-    if (!answers.find((a) => a.question === q)) {
-      setAnswers([...answers, { question: q, answer: "", expanded: true }]);
+    if (!entries.find((a) => a.question === q)) {
+      setEntries([...entries, { question: q, answer: "", expanded: true }]);
     }
   };
 
   const handleCustomQuestionSubmit = () => {
     const trimmed = customQuestion.trim();
-    if (trimmed && !answers.find((a) => a.question === trimmed)) {
-      setAnswers([
-        ...answers,
+    if (trimmed && !entries.find((a) => a.question === trimmed)) {
+      setEntries([
+        ...entries,
         { question: trimmed, answer: "", expanded: true, isCustom: true },
       ]);
       setCustomQuestion("");
@@ -60,20 +61,20 @@ export default function JournalTodayPage() {
   };
 
   const handleAnswerChange = (index: number, value: string) => {
-    const updated = [...answers];
+    const updated = [...entries];
     updated[index].answer = value;
-    setAnswers(updated);
+    setEntries(updated);
   };
 
   const toggleExpand = (index: number) => {
-    const updated = [...answers];
+    const updated = [...entries];
     updated[index].expanded = !updated[index].expanded;
-    setAnswers(updated);
+    setEntries(updated);
   };
 
   const removeQuestion = (index: number) => {
-    const removed = answers[index];
-    setAnswers((prev) => prev.filter((_, i) => i !== index));
+    const removed = entries[index];
+    setEntries((prev) => prev.filter((_, i) => i !== index));
 
     if (!removed.isCustom && !allQuestions.includes(removed.question)) {
       allQuestions.push(removed.question);
@@ -81,7 +82,7 @@ export default function JournalTodayPage() {
   };
 
   const handleSubmit = async () => {
-    const filled = answers.filter((a) => a.answer.trim() !== "");
+    const filled = entries.filter((a) => a.answer.trim() !== "");
 
     if (filled.length === 0) {
       toast.error("Please fill at least one answer!");
@@ -93,7 +94,7 @@ export default function JournalTodayPage() {
 
     const res = await fetch("/api/journal/today", {
       method: "POST",
-      body: JSON.stringify({ entries: answers }),
+      body: JSON.stringify({ entries: entries }),
       headers: { "Content-Type": "application/json" },
     });
 
@@ -115,7 +116,7 @@ export default function JournalTodayPage() {
 
       <div className="space-y-4">
         <AnimatePresence>
-          {answers.map((a, i) => (
+          {entries.map((a, i) => (
             <QuestionCard
               key={a.question}
               answer={a}
@@ -147,7 +148,7 @@ export default function JournalTodayPage() {
 
       <SubmitButton
         loading={loading}
-        answersLength={answers.length}
+        answersLength={entries.length}
         onSubmit={handleSubmit}
       />
     </main>
