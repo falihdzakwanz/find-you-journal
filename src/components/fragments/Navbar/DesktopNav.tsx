@@ -18,7 +18,7 @@ export default function DesktopNav({
   session,
 }: DesktopNavProps) {
   return (
-    <div className="hidden mt-4 md:flex md:space-x-6 lg:space-x-10 md:mt-0">
+    <div className="hidden mt-4 md:flex md:space-x-4 lg:space-x-10 md:mt-0">
       <NavLinks />
       <div className="relative">
         <NavAuthButton

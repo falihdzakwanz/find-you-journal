@@ -1,20 +1,26 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Home, Info, BookOpen, PencilLine } from "lucide-react";
+import { Home, Info, BookOpen, PencilLine, Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export const navLinks = [
   { href: "/", label: "Home", icon: <Home size={18} /> },
   { href: "/about", label: "About", icon: <Info size={18} /> },
   {
+    href: "/journal/today",
+    label: "Journaling",
+    icon: <PencilLine size={18} />,
+  },
+  {
     href: "/journal/history",
     label: "History",
     icon: <BookOpen size={18} />,
   },
+
   {
-    href: "/journal/today",
-    label: "Journaling",
-    icon: <PencilLine size={18} />,
+    href: "/contact",
+    label: "Contact",
+    icon: <Mail size={18} />,
   },
 ];
 
