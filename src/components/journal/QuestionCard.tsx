@@ -1,10 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Answer } from "@/types/questionAndAnswer";
+import { JournalTodayEntry } from "@/types/entry.type";
 
 type QuestionCardProps = {
-  answer: Answer;
+  answer: JournalTodayEntry;
   index: number;
   onToggleExpand: (index: number) => void;
   onRemoveQuestion: (index: number) => void;
