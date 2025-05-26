@@ -14,21 +14,10 @@ export default function PrivacyPage() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary">
-              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5z"
-                />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-dark-brown">Find You</h1>
-          </div>
-          <h2 className="mb-2 text-3xl font-bold text-dark-brown">
+          <h1 className="mb-2 text-2xl font-bold md:text-3xl text-dark-brown lg:text-4xl">
             Privacy Policy
-          </h2>
-          <p className="text-dark-brown/70">Last Updated: May 25, 2025</p>
+          </h1>
+          <p className="text-dark-brown/70">Last Updated: May 26, 2025</p>
         </motion.header>
 
         {/* Content */}

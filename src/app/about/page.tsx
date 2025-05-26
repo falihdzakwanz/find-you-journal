@@ -5,8 +5,13 @@ export default function AboutPage() {
   return (
     <main className="w-full px-4 py-10 mx-auto text-justify lg:max-w-3xl md:max-w-2xl sm:px-6 lg:px-8 text-dark-brown">
       <div className="flex items-center justify-center gap-3 mb-8">
-        <div className="flex items-center justify-center w-12 h-12 text-xl font-bold text-white rounded-full bg-gradient-to-br from-indigo-800 to-amber-600">
-          FY
+        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary">
+          <svg className="w-6 h-6 text-white" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5z"
+            />
+          </svg>
         </div>
         <h1 className="font-serif text-3xl font-bold sm:text-4xl">Find You</h1>
       </div>
