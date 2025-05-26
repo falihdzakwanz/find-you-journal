@@ -51,8 +51,16 @@ export default function Navbar() {
 
 function NavBrand() {
   return (
-    <Link href="/" className="text-xl font-bold text-white lg:text-2xl">
-      Find You
+    <Link href="/" className="flex items-center gap-2 text-white">
+      <div className="flex items-center justify-center w-8 h-8">
+        <svg className="w-5 h-5 md:w-7 md:h-7 lg:w-10 lg:h-10" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5z"
+          />
+        </svg>
+      </div>
+      <span className="text-xl font-bold lg:text-2xl">Find You</span>
     </Link>
   );
 }
