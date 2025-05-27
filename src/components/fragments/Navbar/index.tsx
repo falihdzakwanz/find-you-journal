@@ -25,8 +25,8 @@ export default function Navbar() {
         isHome ? "absolute" : "sticky top-0"
       } w-full z-50 bg-neutral shadow-sm`}
     >
-      <div className="relative flex flex-col px-4 py-3 bg-primary md:flex-row md:items-center md:justify-between md:px-6">
-        <div className="flex items-center justify-between w-full md:w-auto">
+      <div className="relative flex flex-col px-4 py-3 bg-primary lg:flex-row lg:items-center lg:justify-between lg:px-6">
+        <div className="flex items-center justify-between w-full lg:w-auto">
           <NavBrand />
           <MobileMenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         </div>
@@ -60,7 +60,7 @@ function NavBrand() {
           />
         </svg>
       </div>
-      <span className="text-xl font-bold lg:text-2xl">Find You</span>
+      <span className="text-xl font-bold md:text-2xl">Find You</span>
     </Link>
   );
 }

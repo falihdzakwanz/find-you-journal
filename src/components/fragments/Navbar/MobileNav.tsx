@@ -22,14 +22,14 @@ export default function MobileNav({ isMenuOpen, isLoggedIn }: MobileNavProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="absolute left-0 z-40 flex flex-col w-full px-4 py-4 space-y-4 shadow-md md:hidden top-full bg-primary"
+          className="absolute left-0 z-40 flex flex-col w-full px-4 py-4 space-y-4 shadow-md lg:hidden top-full bg-primary"
         >
           <NavLinks />
           {isLoggedIn ? (
             <>
               <Link
                 href="/profile"
-                className="relative pb-1 text-lg text-white group lg:text-xl w-fit"
+                className="relative pb-1 text-lg text-white group md:text-xl w-fit"
               >
                 <span className="flex items-center gap-2">
                   <User size={18} />
@@ -47,7 +47,7 @@ export default function MobileNav({ isMenuOpen, isLoggedIn }: MobileNavProps) {
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit lg:text-xl"
+                className="flex items-center gap-2 px-4 py-2 text-lg text-red-500 bg-white rounded-lg hover:underline max-w-fit md:text-xl"
               >
                 <LogOut size={18} />
                 Logout
@@ -56,7 +56,7 @@ export default function MobileNav({ isMenuOpen, isLoggedIn }: MobileNavProps) {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="flex items-center gap-2 px-4 py-2 text-primary text-lg bg-white rounded-lg hover:underline max-w-fit lg:text-xl"
+              className="flex items-center gap-2 px-4 py-2 text-lg bg-white rounded-lg text-primary hover:underline max-w-fit md:text-xl"
             >
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"

@@ -20,7 +20,7 @@ export default function StatCard({
         <div className="p-2 mr-3 rounded-full bg-white/20">{icon}</div>
         <h3 className="text-lg font-medium">{title}</h3>
       </div>
-      <p className="text-3xl font-bold">{value}</p>
+      <p className="text-xl font-bold md:text-3xl">{value}</p>
     </motion.div>
   );
 }

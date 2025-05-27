@@ -10,7 +10,7 @@ export default function MobileMenuButton({
   toggleMenu,
 }: MobileMenuButtonProps) {
   return (
-    <div className="block md:hidden">
+    <div className="block lg:hidden">
       <motion.button
         onClick={toggleMenu}
         aria-label="Toggle menu"

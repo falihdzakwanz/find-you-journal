@@ -35,7 +35,7 @@ export default function NavLinks() {
           <Link
             key={href}
             href={href}
-            className="relative pb-1 text-lg text-white group lg:text-xl w-fit"
+            className="relative pb-1 text-lg text-white md:text-xl group w-fit"
           >
             <span className="flex items-center gap-2">
               {icon}

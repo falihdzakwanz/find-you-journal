@@ -18,13 +18,13 @@ export default function ViewModeSelector({ viewMode, setViewMode }: Props) {
         onChange={(e) => setViewMode(e.target.value as ViewMode)}
         className="block w-full px-4 py-2.5 text-base md:text-lg transition-all duration-300 border-2 rounded-lg cursor-pointer appearance-none bg-white border-primary/30 text-dark-brown focus:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none"
       >
-        <option value="daily" className="text-xs md:text-base">
+        <option value="daily" className="text-xs lg:text-base">
           Daily
         </option>
-        <option value="weekly" className="text-xs md:text-base">
+        <option value="weekly" className="text-xs lg:text-base">
           Weekly
         </option>
-        <option value="monthly" className="text-xs md:text-base">
+        <option value="monthly" className="text-xs lg:text-base">
           Monthly
         </option>
       </select>

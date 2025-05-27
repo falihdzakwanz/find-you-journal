@@ -37,10 +37,10 @@ export default function ProfileHeader({
             />
           )}
         </motion.div>
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-dark-brown">
+        <h1 className="text-xl font-bold md:text-2xl lg:text-3xl text-dark-brown">
           {session?.user?.name}
         </h1>
-        <p className="text-primary/80 text-sm sm:text-base">{session?.user?.email}</p>
+        <p className="text-sm text-primary/80 sm:text-base md:text-lg">{session?.user?.email}</p>
 
         <motion.button
           onClick={() => setShowDeleteModal(true)}

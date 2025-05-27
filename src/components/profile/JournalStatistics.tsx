@@ -11,7 +11,7 @@ export default function JournalStatistics({ stats }: { stats: JournalStats }) {
       transition={{ delay: 0.4 }}
       className="p-6 mb-12 bg-white rounded-lg shadow-sm"
     >
-      <h2 className="flex items-center mb-6 text-2xl font-bold text-dark-brown">
+      <h2 className="flex items-center mb-6 text-xl font-bold md:text-2xl text-dark-brown">
         <BarChart2 className="mr-2" /> Journal Statistics
       </h2>
 

@@ -50,7 +50,7 @@ export default function HighlightsSection({ stats }: { stats: JournalStats }) {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.6 }}
     >
-      <h2 className="flex items-center mb-6 text-2xl font-bold text-dark-brown">
+      <h2 className="flex items-center mb-6 text-xl font-bold md:text-2xl text-dark-brown">
         <Award className="mr-2" /> Your Highlights
       </h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

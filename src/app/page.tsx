@@ -19,7 +19,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <main className="flex flex-col-reverse h-screen items-center justify-center md:justify-evenly lg:justify-between mx-auto lg:flex-row gap-8 px-4 py-10 overflow-hidden lg:px-16">
+    <main className="flex flex-col-reverse h-screen items-center justify-center md:justify-evenly lg:justify-between mx-auto lg:flex-row gap-8 px-4 pt-24 py-10 overflow-hidden lg:px-16 md:py-10">
       <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left md:w-3/4">
         {/* Text Animation */}
         <motion.div

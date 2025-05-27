@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="mt-12 pt-6 border-t border-primary/20 text-dark-brown">
-      <div className="flex flex-wrap items-center justify-center gap-2 text-sm sm:gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-2 text-sm sm:gap-4 md:text-lg">
         <Link
           href="/privacy"
           className="transition hover:text-accent hover:underline"
@@ -35,7 +35,7 @@ export default function Footer() {
         </a>
       </div>
 
-      <p className="mt-3 text-center text-xs text-gray-500">
+      <p className="mt-3 text-center text-xs text-gray-500 md:text-sm">
         <a
           href="https://www.flaticon.com/free-icons/magnifying-glass"
           target="_blank"

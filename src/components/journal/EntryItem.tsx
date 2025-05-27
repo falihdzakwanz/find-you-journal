@@ -46,7 +46,7 @@ export default function EntryItem({
         onClick={() => onToggle(entry.id)}
         className="flex items-center justify-between w-full p-5 text-left transition-all duration-300 bg-white hover:from-primary/15 hover:to-primary/25"
       >
-        <span className="text-lg font-semibold text-dark-brown">
+        <span className="text-base font-semibold md:text-lg text-dark-brown">
           {entry.question}
         </span>
         <motion.div
@@ -69,7 +69,7 @@ export default function EntryItem({
             }}
             className="overflow-hidden bg-white"
           >
-            <div className="p-5 text-lg border-t border-primary/20 text-dark-brown">
+            <div className="p-5 text-base border-t md:text-lg border-primary/20 text-dark-brown">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -106,7 +106,7 @@ export default function EntryItem({
               >
                 <motion.button
                   onClick={() => onViewDetail(entry)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-all rounded-lg bg-primary hover:bg-accent md:text-base"
+                  className="flex items-center gap-2 px-4 py-2 text-xs text-white transition-all rounded-lg bg-primary hover:bg-accent md:text-base"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 4px 12px rgba(226, 94, 62, 0.3)",
@@ -119,7 +119,7 @@ export default function EntryItem({
 
                 <motion.button
                   onClick={() => onDelete(entry.id)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-all bg-red-500 rounded-lg hover:bg-red-600 md:text-base"
+                  className="flex items-center gap-2 px-4 py-2 text-xs text-white transition-all bg-red-500 rounded-lg hover:bg-red-600 md:text-base"
                   whileHover={{
                     scale: 1.05,
                     boxShadow: "0 4px 12px rgba(226, 94, 62, 0.3)",
