@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
-import { getJournalEntry } from "@/lib/firebase/services";
+import { journalEntryRepository } from "@/lib/firebase/repositories";
 import { redirect } from "next/navigation";
 import EditJournalForm from "@/components/journal/EditJournalForm";
-import {formatDateEng} from "@/utils/formatDate";
+import { formatDateEng } from "@/utils/formatDate";
 import { decrypt } from "@/lib/webCrypto/encryption";
 
 interface Params {
@@ -17,7 +17,7 @@ export default async function EditJournalPage({ params }: { params: Params }) {
   if (!session?.user?.email) redirect("/login");
 
   try {
-    const entry = await getJournalEntry(session.user.email, id);
+    const entry = await journalEntryRepository.findById(session.user.email, id);
     if (!entry) {
       redirect("/journal/history");
     }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
-import { getJournalEntries } from "@/lib/firebase/services";
+import { journalEntryRepository } from "@/lib/firebase/repositories";
 import { decrypt } from "@/lib/webCrypto/encryption";
 import { handleApiError, successResponse } from "@/lib/api/response";
 import { UnauthorizedError } from "@/lib/exceptions/errors";
@@ -22,7 +22,7 @@ export async function GET(): Promise<NextResponse> {
     userId = session.user.email;
 
     Logger.databaseOperation("getJournalEntries", {}, userId);
-    const entries = await getJournalEntries(userId);
+    const entries = await journalEntryRepository.findAll(userId);
     Logger.info("Entries retrieved from database", {
       userId,
       count: entries.length,

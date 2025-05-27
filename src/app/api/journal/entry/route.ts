@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
-import {
-  updateJournalEntry,
-  deleteJournalEntry,
-  getJournalEntry,
-} from "@/lib/firebase/services";
+import { journalEntryRepository } from "@/lib/firebase/repositories";
 import { decrypt, encrypt } from "@/lib/webCrypto/encryption";
 import { handleApiError, successResponse } from "@/lib/api/response";
 import {
@@ -40,7 +36,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     Logger.debug("Fetching journal entry", { userId, entryId: id });
-    const entry = await getJournalEntry(userId, id);
+    const entry = await journalEntryRepository.findById(userId, id);
 
     if (!entry) {
       throw new NotFoundError("Journal entry not found");
@@ -108,7 +104,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
         userId
       );
 
-      await updateJournalEntry(userId, updateData.id, {
+      await journalEntryRepository.updateEncryptedEntry(userId, updateData.id, {
         answer: encryptedAnswer,
         isEncrypted: true,
         updatedAt: new Date().toISOString(),
@@ -160,7 +156,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
 
     try {
       Logger.databaseOperation("deleteJournalEntry", { entryId: id }, userId);
-      await deleteJournalEntry(userId, id);
+      await journalEntryRepository.delete(userId, id);
 
       Logger.info("Entry deleted successfully", { userId, entryId: id });
       return successResponse();

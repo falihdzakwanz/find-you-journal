@@ -17,7 +17,6 @@ export default function useJournalStats(): UseJournalStatsResult {
 
   const fetchStats = useCallback(async (signal?: AbortSignal) => {
     try {
-      setLoading(true);
       setError(null);
 
       const res = await fetch("/api/journal/stats", { signal });

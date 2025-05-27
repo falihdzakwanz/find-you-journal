@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
-import { getJournalEntries } from "@/lib/firebase/services";
+import { journalEntryRepository } from "@/lib/firebase/repositories";
 import { calculateJournalStats } from "@/utils/statsCalculator";
 import { decrypt } from "@/lib/webCrypto/encryption";
 import { handleApiError, successResponse } from "@/lib/api/response";
@@ -26,7 +26,7 @@ export async function GET(): Promise<NextResponse> {
 
     Logger.databaseOperation("getJournalEntries", {}, userId);
     const dbStartTime = Date.now();
-    const entries = await getJournalEntries(userId);
+    const entries = await journalEntryRepository.findAll(userId);
     const dbDuration = Date.now() - dbStartTime;
 
     Logger.info("Entries retrieved from database", {

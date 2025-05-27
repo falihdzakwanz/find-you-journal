@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
-import { saveJournalEntries } from "@/lib/firebase/services";
+import { journalEntryRepository } from "@/lib/firebase/repositories";
 import { encrypt } from "@/lib/webCrypto/encryption";
 import type {
   JournalEntryInput,
@@ -87,7 +87,9 @@ export async function POST(req: Request): Promise<NextResponse> {
         { entryCount: encryptedEntries.length },
         userId
       );
-      await saveJournalEntries(userId, encryptedEntries);
+
+      await journalEntryRepository.saveAll(userId, encryptedEntries);
+
       Logger.info("Entries saved successfully", {
         userId,
         entryCount: encryptedEntries.length,
