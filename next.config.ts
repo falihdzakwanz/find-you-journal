@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  robotsTxt: {
+    policies: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/private", "/api", "/_next/static"],
+      },
+    ],
+    additionalSitemaps: ["https://find-you-journal.vercel.app/sitemap.xml"],
+  },
 };
 
 export default nextConfig;

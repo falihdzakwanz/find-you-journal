@@ -1,0 +1,27 @@
+{
+  "name": "Find You",
+  "short_name": "FindYou",
+  "description": "Self-Discovery Journal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFBDA",
+  "theme_color": "#ED9455",
+  "icons": [
+    {
+      "src": "/icons/favicon/magnifying-glass-64px.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/favicon/magnifying-glass-128px.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/find_you_app_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

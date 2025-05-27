@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="/icons/favicon/magnifying-glass-64px.png"/>
+      <square150x150logo src="/icons/favicon/magnifying-glass-128px.png"/>
+      <square310x310logo src="/icons/find_you_app_icon.png"/>
+      <TileColor>#ED9455</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
