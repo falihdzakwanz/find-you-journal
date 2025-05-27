@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen p-4 bg-neutral">
+    <main className="flex items-center justify-center min-h-screen p-4 m-auto bg-neutral">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -39,15 +39,17 @@ export default function LoginPage() {
             transition={{ delay: 0.2 }}
             className="inline-flex flex-col items-center gap-2"
           >
-            <div className="flex items-center justify-center w-16 h-16 bg-white rounded-full shadow-md">
-              <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5z"
-                />
-              </svg>
+            <div className="flex flex-row items-center space-x-4 md:flex-col md:justify-center md:space-x-0">
+              <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md md:h-16 md:w-16">
+                <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5z"
+                  />
+                </svg>
+              </div>
+              <h1 className="text-2xl font-bold text-white md:text-3xl md:mt-4">Find You</h1>
             </div>
-            <h1 className="mt-4 text-3xl font-bold text-white">Find You</h1>
             <p className="mt-1 text-lg text-white/90">
               Your personal journal for self-discovery
             </p>
@@ -57,7 +59,7 @@ export default function LoginPage() {
         {/* Content */}
         <div className="p-8">
           <div className="mb-8 text-center">
-            <h2 className="mb-2 text-2xl font-bold text-dark-brown">
+            <h2 className="mb-2 text-xl font-bold md:text-2xl text-dark-brown">
               Welcome Back
             </h2>
             <p className="text-dark-brown/70">
