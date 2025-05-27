@@ -14,23 +14,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/about`,
       lastModified: "2025-05-26", // About page
       changeFrequency: "monthly" as const,
-      priority: 0.8,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: "2025-05-26", // Contact page
       changeFrequency: "yearly" as const,
-      priority: 0.8,
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/journal/history`,
-      lastModified: "2025-05-26", // Journal history
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
+      lastModified: new Date().toISOString(), // Journal history
+      changeFrequency: "daily" as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/journal/today`,
-      lastModified: "2025-05-26", // Today's journal
+      lastModified: new Date().toISOString(), // Today's journal
       changeFrequency: "daily" as const,
       priority: 0.9,
     },
@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/profile`,
       lastModified: "2025-05-26", // Profile page
       changeFrequency: "weekly" as const,
-      priority: 0.5,
+      priority: 0.7,
     },
   ];
 
