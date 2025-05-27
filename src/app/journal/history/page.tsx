@@ -173,7 +173,7 @@ export default function JournalHistoryPage() {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDeleteConfirm}
-        title="Delete Journal JournalEntry"
+        title="Delete Journal Entry"
         message="Are you sure you want to delete this entry? This action cannot be undone."
         confirmText="Delete"
         cancelText="Cancel"

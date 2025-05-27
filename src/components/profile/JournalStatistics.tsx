@@ -31,7 +31,7 @@ export default function JournalStatistics({ stats }: { stats: JournalStats }) {
             />
             <StatItem
               label="Entries This Month"
-              value={Math.floor((stats?.totalEntries || 0) / 3)}
+              value={stats?.entriesThisMonth || 0}
             />
           </ul>
         </div>
@@ -46,7 +46,7 @@ export default function JournalStatistics({ stats }: { stats: JournalStats }) {
                 <StatItem key={category} label={category} value={count} />
               ))
             ) : (
-              <li>No category data available</li>
+              <li className="text-dark-brown/80">No category data available</li>
             )}
           </ul>
         </div>

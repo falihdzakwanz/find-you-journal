@@ -1,39 +1,65 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { JournalStats } from "@/types/entry.type";
 
-export default function useJournalStats() {
+type UseJournalStatsResult = {
+  stats: JournalStats | null;
+  loading: boolean;
+  error: string | null;
+  refresh: () => Promise<void>;
+};
+
+export default function useJournalStats(): UseJournalStatsResult {
   const [stats, setStats] = useState<JournalStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/journal/stats");
+  const fetchStats = useCallback(async (signal?: AbortSignal) => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        if (!res.ok) {
-          throw new Error(res.statusText || "Failed to fetch stats");
-        }
+      const res = await fetch("/api/journal/stats", { signal });
 
-        const data = await res.json();
-        setStats(data);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || `HTTP error! status: ${res.status}`);
       }
-    };
 
-    fetchStats();
+      const { data } = await res.json();
+
+      if (!data || typeof data !== "object") {
+        throw new Error("Invalid stats data format");
+      }
+
+      setStats(data);
+    } catch (err) {
+      if (err instanceof Error && err.name !== "AbortError") {
+        const errorMessage = err.message;
+        console.error("Failed to fetch journal stats:", errorMessage);
+        setError(errorMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    fetchStats(abortController.signal);
+
+    return () => abortController.abort();
+  }, [fetchStats]);
+
+  const refresh = useCallback(async () => {
+    await fetchStats();
+  }, [fetchStats]);
 
   return {
     stats,
     loading,
     error,
+    refresh,
   };
 }

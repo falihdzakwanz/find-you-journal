@@ -82,9 +82,11 @@ export default function JournalTodayPage() {
   };
 
   const handleSubmit = async () => {
-    const filled = entries.filter((a) => a.answer.trim() !== "");
+    const entriesToSubmit = entries.filter(
+      (entry) => entry.answer.trim() !== ""
+    );
 
-    if (filled.length === 0) {
+    if (entriesToSubmit.length === 0) {
       toast.error("Please fill at least one answer!");
       return;
     }
@@ -92,19 +94,27 @@ export default function JournalTodayPage() {
     setLoading(true);
     const loadingToast = toast.loading("Saving Journal...");
 
-    const res = await fetch("/api/journal/today", {
-      method: "POST",
-      body: JSON.stringify({ entries: entries }),
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
+      const res = await fetch("/api/journal/today", {
+        method: "POST",
+        body: JSON.stringify({ entries: entriesToSubmit }), 
+        headers: { "Content-Type": "application/json" },
+      });
 
-    setLoading(false);
-
-    if (res.ok) {
-      toast.success("Journal saved successfully!", { id: loadingToast });
-      router.push("/journal/history");
-    } else {
-      toast.error("Failed to save journal!", { id: loadingToast });
+      if (res.ok) {
+        toast.success("Journal saved successfully!", { id: loadingToast });
+        router.push("/journal/history");
+      } else {
+        const errorData = await res.json();
+        toast.error(errorData.message || "Failed to save journal!", {
+          id: loadingToast,
+        });
+      }
+    } catch (error) {
+      toast.error("Network error occurred!", { id: loadingToast });
+      console.error("Submission error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

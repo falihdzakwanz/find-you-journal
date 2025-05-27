@@ -9,6 +9,7 @@ export function calculateJournalStats(entries: JournalEntry[]) {
       mostActiveDay: "No entries yet",
       longestEntry: 0,
       categories: {},
+      entriesThisMonth: 0, 
     };
   }
 
@@ -19,7 +20,22 @@ export function calculateJournalStats(entries: JournalEntry[]) {
     mostActiveDay: calculateMostActiveDay(entries),
     longestEntry: calculateLongestEntry(entries),
     categories: calculateCategories(entries),
+    entriesThisMonth: calculateCurrentMonthEntries(entries), 
   };
+}
+
+function calculateCurrentMonthEntries(entries: JournalEntry[]): number {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  return entries.filter((entry) => {
+    const entryDate = new Date(entry.date);
+    return (
+      entryDate.getMonth() === currentMonth &&
+      entryDate.getFullYear() === currentYear
+    );
+  }).length;
 }
 
 export function calculateStreak(entries: JournalEntry[]): number {
@@ -101,7 +117,9 @@ export function calculateLongestEntry(entries: JournalEntry[]): number {
   return Math.max(...entries.map((entry) => entry.answer.split(/\s+/).length));
 }
 
-export function calculateCategories(entries: JournalEntry[]): Record<string, number> {
+export function calculateCategories(
+  entries: JournalEntry[]
+): Record<string, number> {
   const categories: Record<string, number> = {};
 
   entries.forEach((entry) => {

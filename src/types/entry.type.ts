@@ -4,6 +4,7 @@ export interface JournalEntryBase {
   question: string;
   createdAt: string;
   date: string;
+  updatedAt?: string;
   category?: string;
   isEncrypted?: boolean;
 }
@@ -19,7 +20,9 @@ export interface JournalEntryInput {
   question: string;
   category?: string;
 }
-
+export interface JournalEntryUpdateInput extends JournalEntryInput {
+  id: string;
+}
 // Specifically for encrypted entries
 export interface EncryptedJournalEntry extends JournalEntryBase {
   isEncrypted: true;
@@ -32,6 +35,7 @@ export interface JournalStats {
   avgEntriesPerWeek: number;
   mostActiveDay: string;
   longestEntry: number;
+  entriesThisMonth: number;
   categories: Record<string, number>;
 }
 export interface JournalTodayEntry {

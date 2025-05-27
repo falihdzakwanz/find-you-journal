@@ -39,7 +39,7 @@ export async function deleteJournalEntry(userId: string, id: string) {
 export async function updateJournalEntry(
   userId: string,
   id: string,
-  updateData: Pick<EncryptedJournalEntry, "answer" | "isEncrypted">
+  updateData: Pick<EncryptedJournalEntry, "answer" | "isEncrypted" | "updatedAt">
 ): Promise<void> {
   const docRef = doc(db, "journals", userId, "entries", id);
   await updateDoc(docRef, updateData);

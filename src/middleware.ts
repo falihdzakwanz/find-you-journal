@@ -1,18 +1,35 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { UnauthorizedError } from "@/lib/exceptions/errors";
+import Logger from "@/lib/pino/logger";
 
 export default withAuth(
   function middleware() {
-    // For protected routes, just continue
+
     return NextResponse.next();
   },
   {
     callbacks: {
-      authorized({ token }) {
+      authorized({ token, req }) {
+        if (!token) {
+          const ip =
+            req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+            req.headers.get("x-real-ip") ||
+            "unknown";
 
-        // For all other routes, require authentication
-        return !!token;
+          Logger.warn("Unauthorized access attempt", {
+            path: req.nextUrl.pathname,
+            ip,
+            userAgent: req.headers.get("user-agent"),
+          });
+          throw new UnauthorizedError();
+        }
+        return true;
       },
+    },
+    pages: {
+      signIn: "/login",
+      error: "/error",
     },
   }
 );
