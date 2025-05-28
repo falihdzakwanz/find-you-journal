@@ -1,10 +1,19 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import Logger from "@/lib/pino/logger";
 import { getToken } from "next-auth/jwt";
 
 export default withAuth(
-  function middleware() {
+  async function middleware(req) {
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    if (token && req.nextUrl.pathname === "/login") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
 
     return NextResponse.next();
   },
@@ -15,28 +24,19 @@ export default withAuth(
           req,
           secret: process.env.NEXTAUTH_SECRET,
         });
-        if (!token) {
-          const ip =
-            req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-            req.headers.get("x-real-ip") ||
-            "unknown";
 
-          Logger.warn("Unauthorized access attempt", {
-            path: req.nextUrl.pathname,
-            ip,
-            userAgent: req.headers.get("user-agent"),
-          });
-        }
+        const { pathname } = req.nextUrl;
+        const isAuthPage = pathname.startsWith("/login");
+
+        // Allow access to auth pages when not logged in
+        if (isAuthPage) return true;
+
         return !!token;
       },
-    },
-    pages: {
-      signIn: "/login",
-      error: "/error",
     },
   }
 );
 
 export const config = {
-  matcher: ["/journal/:path*", "/profile"],
+  matcher: ["/journal/:path*", "/profile", "/login"],
 };
