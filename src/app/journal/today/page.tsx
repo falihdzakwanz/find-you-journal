@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
-import JournalTodaySkeleton from "@/components/skeletonLoading/JournalTodaySkeleton";
+import JournalTodaySkeleton from "@/components/skeletonsLoading/JournalTodaySkeleton";
 import JournalHeader from "@/components/journal/JournalHeader";
 import QuestionCard from "@/components/journal/QuestionCard";
 import QuestionSuggestions from "@/components/journal/QuestionSuggestions";
@@ -97,7 +97,7 @@ export default function JournalTodayPage() {
     try {
       const res = await fetch("/api/journal/today", {
         method: "POST",
-        body: JSON.stringify({ entries: entriesToSubmit }), 
+        body: JSON.stringify({ entries: entriesToSubmit }),
         headers: { "Content-Type": "application/json" },
       });
 

@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import useJournalStats from "@/hooks/useJournalStats";
-import ProfileSkeleton from "@/components/skeletonLoading/ProfileSkeleton";
+import ProfileSkeleton from "@/components/skeletonsLoading/ProfileSkeleton";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import StatsGrid from "@/components/profile/StatsGrid";
 import JournalStatistics from "@/components/profile/JournalStatistics";
@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
     const toastId = toast.loading("Deleting your account...");
-    
+
     try {
       const res = await fetch("/api/account", {
         method: "DELETE",
@@ -29,7 +29,8 @@ export default function ProfilePage() {
       toast.success("Account deleted successfully", { id: toastId });
       await signOut({ callbackUrl: "/" });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Deletion failed";
+      const errorMessage =
+        err instanceof Error ? err.message : "Deletion failed";
       toast.error(errorMessage, { id: toastId });
       setIsDeleting(false);
     }
@@ -41,9 +42,9 @@ export default function ProfilePage() {
     <div className="container px-4 py-8 mx-auto">
       {error && <ErrorMessage message={error} />}
 
-      <ProfileHeader 
-        onDeleteConfirm={handleDeleteAccount} 
-        isDeleting={isDeleting} 
+      <ProfileHeader
+        onDeleteConfirm={handleDeleteAccount}
+        isDeleting={isDeleting}
       />
 
       {stats && (

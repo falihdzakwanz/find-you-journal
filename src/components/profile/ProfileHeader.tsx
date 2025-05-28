@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import ConfirmModal from "@/components/modal/ConfirmModal";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 
 export default function ProfileHeader({
   onDeleteConfirm,
@@ -40,7 +40,9 @@ export default function ProfileHeader({
         <h1 className="text-xl font-bold md:text-2xl lg:text-3xl text-dark-brown">
           {session?.user?.name}
         </h1>
-        <p className="text-sm text-primary/80 sm:text-base md:text-lg">{session?.user?.email}</p>
+        <p className="text-sm text-primary/80 sm:text-base md:text-lg">
+          {session?.user?.email}
+        </p>
 
         <motion.button
           onClick={() => setShowDeleteModal(true)}
