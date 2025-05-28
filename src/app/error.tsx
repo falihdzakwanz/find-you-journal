@@ -71,7 +71,7 @@ export default function ErrorPage({
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            {error.message || "An unexpected error occurred"}
+            {"An unexpected error occurred"}
           </motion.h2>
 
           <motion.p

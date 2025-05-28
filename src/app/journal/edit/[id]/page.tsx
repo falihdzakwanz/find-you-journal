@@ -6,11 +6,7 @@ import EditJournalForm from "@/components/journal/EditJournalForm";
 import { formatDateEng } from "@/utils/formatDate";
 import { decrypt } from "@/lib/webCrypto/encryption";
 
-interface Params {
-  id: string;
-}
-
-export default async function EditJournalPage({ params }: { params: Params }) {
+export default async function EditJournalPage({ params }: { params: Promise<{ id: string }>}) {
   const { id } = await params;
 
   const session = await getServerSession(authOptions);

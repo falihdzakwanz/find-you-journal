@@ -1,6 +1,5 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { UnauthorizedError } from "@/lib/exceptions/errors";
 import Logger from "@/lib/pino/logger";
 
 export default withAuth(
@@ -22,9 +21,8 @@ export default withAuth(
             ip,
             userAgent: req.headers.get("user-agent"),
           });
-          throw new UnauthorizedError();
         }
-        return true;
+        return !!token;
       },
     },
     pages: {
