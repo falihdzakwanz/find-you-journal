@@ -1,6 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import Logger from "@/lib/pino/logger";
+import { getToken } from "next-auth/jwt";
 
 export default withAuth(
   function middleware() {
@@ -9,7 +10,11 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized({ token, req }) {
+      async authorized({ req }) {
+        const token = await getToken({
+          req,
+          secret: process.env.NEXTAUTH_SECRET,
+        });
         if (!token) {
           const ip =
             req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
