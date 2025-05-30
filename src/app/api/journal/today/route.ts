@@ -48,11 +48,6 @@ export async function POST(req: Request): Promise<NextResponse> {
     });
     Logger.debug("All entries validated", { userId });
 
-    const today = new Date();
-    const clientTimezoneOffset = today.getTimezoneOffset() * 60000;
-    const localDate = new Date(today.getTime() - clientTimezoneOffset);
-    const dateString = localDate.toISOString().split("T")[0];
-
     Logger.info("Starting entry encryption", {
       userId,
       entryCount: requestBody.entries.length,
@@ -67,8 +62,8 @@ export async function POST(req: Request): Promise<NextResponse> {
             question: entry.question,
             answer: encryptedAnswer,
             isEncrypted: true,
-            createdAt: today.toISOString(),
-            date: dateString,
+            createdAt: new Date().toISOString(),
+            date: new Date().toISOString(),
             ...(entry.category && { category: entry.category }),
           };
         } catch (error) {
