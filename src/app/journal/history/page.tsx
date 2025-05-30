@@ -15,6 +15,8 @@ import EntryItem from "@/components/journal/EntryItem";
 import DateGroup from "@/components/journal/DateGroup";
 import EmptyState from "@/components/journal/EmptyState";
 import ConfirmModal from "@/components/modals/ConfirmModal";
+import { endOfWeek, format, startOfWeek } from "date-fns";
+import { enUS } from "date-fns/locale";
 
 export default function JournalHistoryPage() {
   const {
@@ -24,6 +26,7 @@ export default function JournalHistoryPage() {
     changeDay,
     changeWeek,
     changeMonth,
+    currentDate
   } = useJournalFilters();
   const {
     selectedEntry,
@@ -94,7 +97,32 @@ export default function JournalHistoryPage() {
         transition={{ delay: 0.3 }}
       >
         {visibleKeys.length === 0 ? (
-          <EmptyState />
+          <motion.div
+            className="space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.4,
+              type: "spring",
+              stiffness: 100,
+              damping: 10,
+            }}
+          >
+            <GroupHeader
+              title={
+                viewMode === "daily"
+                  ? formatDateEng(format(currentDate, "yyyy-MM-dd"))
+                  : viewMode === "weekly"
+                  ? `${format(startOfWeek(currentDate), "MMM d")} - ${format(
+                      endOfWeek(currentDate),
+                      "MMM d, yyyy"
+                    )}`
+                  : format(currentDate, "MMMM yyyy", { locale: enUS })
+              }
+              count={0}
+            />
+            <EmptyState />
+          </motion.div>
         ) : (
           visibleKeys.map((groupKey, index) => {
             const count =
