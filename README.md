@@ -46,14 +46,12 @@ To become the most trusted tool for intentional self-discovery, helping users bu
 ### Core Functionality
 
 - **Daily Journaling**: Write entries with guided prompts
-- **Emotional Tracking**: Visualize your mood patterns
 - **Private Archives**: Secure storage for your thoughts
 - **Insight Discovery**: Uncover patterns in your writing
 
 ### How It Helps You "Find You"
 
 - **Discovery Prompts**: Thought-provoking questions tailored to your journaling history
-- **Insight Tracking**: Visualize emotional patterns over time
 - **Private Archives**: Encrypted entries only you can access
 - **Guided Reflections**: Weekly exercises to deepen self-awareness
 
